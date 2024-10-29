@@ -17,7 +17,7 @@ extern int start(widget_t *display);
 update: draws every frame
 @param display: Display widget
 */
-extern void update(widget_t *display);
+extern int update(widget_t *display);
 
 /*
 make_display: Creates a window widget

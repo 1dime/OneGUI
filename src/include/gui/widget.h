@@ -11,6 +11,7 @@ struct widget
     int numChildren;
     void *widgetData;
     void *(*widgetFunction)(widget_t *); //Any click on widget function
+    void *(*draw)(widget_t *, widget_t *); //Draws widget on screen
     widget_t **childWidgets;
     property_t *properties; //Set by implementation
 };
@@ -23,9 +24,10 @@ build_widget: creates a new widget
 @param scaleY: length
 @param widgetData: data such as window label, text label, etc
 @param widgetFunction: function to be ran if widget is something like a button
+@param drawFunction: function to be ran to draw widget on screen
 @returns new widget
 */
-widget_t *build_widget(int x, int y, int scaleX, int scaleY, void *widgetData, void *widgetFunction);
+widget_t *build_widget(int x, int y, int scaleX, int scaleY, void *widgetData, void *widgetFunction, void *drawFunction);
 
 /*
 add_child: Adds child widget to parent widget

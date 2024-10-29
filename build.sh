@@ -1,5 +1,29 @@
 reset
 
+#!/bin/bash
+installNecessaryPackages() {
+    #Install any missing dependencies, such as xorg or libx11-dev
+    packages=("gcc", "g++", "libx11-dev", "xorg",)
+    packages_str=""
+    for package in "${packages[@]}"
+    do
+        package=${package::-1}
+        dpkg --status $package &> /dev/null
+        if [ ! $? -eq 0 ]
+        then
+            package+=' '
+            packages_str+=$package
+        fi
+    done
+    
+    #Install any packages not installed
+    if [ "$packages_str" != "" ]
+    then
+        echo "Installing missing dependencies $packages_str"
+        sudo apt-get install $packages_str -y
+    fi
+}
+
 #Make the first argument all lowercase
 platform="${1,,}"
 #Show the help menu if needed
@@ -40,6 +64,8 @@ else
         fi
     elif [ "$platform" == "linux" ]
     then
+	    #Install required packages
+        installNecessaryPackages
         #Build onegui for Linux, targetting Ubuntu or any debian linux-based OS
         mkdir -p "bin/linux"
         gcc src/main.c -Isrc/include -o bin/linux/onegui.o  -g -lX11

@@ -10,7 +10,7 @@ void hide_toolbar(Window window, Display *display)
 {
     //Create variables necessary for modifying X11 properties
     Atom atom = XInternAtom(display, "_MOTIF_WM_HINTS", false);
-    if(atom == NULL)
+    if((&atom) == NULL)
     {
         printf("hide_toolbar(): failed to hide close, minimize, and maximize buttons.\n");
         return;
@@ -67,16 +67,12 @@ widget_t *make_display(int x, int y, int width, int length, property_t *properti
         hide_toolbar(window, display);
     }
 
-    //And show the window
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
-    XMapWindow(display, window);
-
     //Now make a widget for the display and window
-    widget_t *displayWidget = build_widget(x, y, width, length, (void *) display, NULL);
-    widget_t *windowWidget = build_widget(x, y, width, length, (void *) window, NULL);
+    widget_t *displayWidget = build_widget(x, y, width, length, (void *) display, NULL, NULL);
+    widget_t *windowWidget = build_widget(x, y, width, length, (void *) window, NULL, NULL);
     add_child(displayWidget, windowWidget);
-    add_child(displayWidget, build_widget(x, y, width, length, (void *) &event, NULL));
-    add_child(displayWidget, build_widget(x, y, width, length, (void *) screen, NULL));
+    add_child(displayWidget, build_widget(x, y, width, length, (void *) &event, NULL, NULL));
+    add_child(displayWidget, build_widget(x, y, width, length, (void *) screen, NULL, NULL));
 
     //And return the display widget
     return displayWidget;
@@ -99,17 +95,37 @@ int show_window(widget_t *display)
     //Now initialize properties
     property_t *properties = mk_property("Root", NULL);
 
+    //And show the window
+    XSelectInput(disp, w, ExposureMask | KeyPressMask);
+    XMapWindow(disp, w);
+
     //And run the start function
-    int startRes = start(display);
-    while(startRes != EXIT_FAILURE)
+    int res = start(display);
+    while(res != EXIT_FAILURE)
     {
         //Get next event
         XNextEvent(disp, &event);
 
+        //Go through all child widgets and draw them if possible
+        for(int index = 0; index < display->numChildren; index++)
+        {
+            //Get current child widget
+            widget_t *child = display->childWidgets[index];
+            //Try to draw current widget
+            if(child->draw != NULL)
+            {
+                child->draw(display, child);
+            }
+        }
+
         //And run the update function
-        update(display);
+        res = update(display);
     }
 
+
+    //We stopped showing
+    XCloseDisplay(disp);
+
     //Return results of start operation
-    return startRes;
+    return res;
 }
