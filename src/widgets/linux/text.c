@@ -11,8 +11,8 @@ draw_text: Default function for drawing text
 void *draw_text(widget_t *display, widget_t *text_widget)
 {
     //Get display and window from display widget
-    Display *disp = display->widgetData;
-    Window wind = display->childWidgets[0]->widgetData;
+    Display *disp = (Display *) display->widgetData;
+    Window wind = (Window) display->childWidgets[0]->widgetData;
     GC gc = DefaultGC(disp, (int) display->childWidgets[2]->widgetData);
 
     //And draw the text
@@ -31,11 +31,6 @@ mk_text: Creates a simple text widget
 */
 widget_t *mk_text(widget_t *display, const char *text, int x, int y, int scaleX, int scaleY, widget_t *parent)
 {
-    //Get current display and window
-    Display *disp = (Display *) display->widgetData;
-    Window window = (Window) display->childWidgets[0]->widgetData;
-    GC gc = DefaultGC(disp, (int) display->childWidgets[2]->widgetData);
-
     //Make a new widget
     widget_t *text_widget = build_widget(x, y, scaleX, scaleY, (void *) text, NULL, draw_text);
     

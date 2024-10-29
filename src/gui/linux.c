@@ -72,7 +72,7 @@ widget_t *make_display(int x, int y, int width, int length, property_t *properti
     widget_t *windowWidget = build_widget(x, y, width, length, (void *) window, NULL, NULL);
     add_child(displayWidget, windowWidget);
     add_child(displayWidget, build_widget(x, y, width, length, (void *) &event, NULL, NULL));
-    add_child(displayWidget, build_widget(x, y, width, length, (void *) screen, NULL, NULL));
+    add_child(displayWidget, build_widget(x, y, width, length, (int *) screen, NULL, NULL));
 
     //And return the display widget
     return displayWidget;
@@ -96,7 +96,7 @@ int show_window(widget_t *display)
     property_t *properties = mk_property("Root", NULL);
 
     //And show the window
-    XSelectInput(disp, w, ExposureMask | KeyPressMask);
+    XSelectInput(disp, w, ExposureMask | KeyPressMask | ButtonPressMask);
     XMapWindow(disp, w);
 
     //And run the start function
@@ -106,12 +106,30 @@ int show_window(widget_t *display)
         //Get next event
         XNextEvent(disp, &event);
 
-        //Go through all child widgets and draw them if possible
+        //Go through all child widgets
         for(int index = 0; index < display->numChildren; index++)
         {
             //Get current child widget
             widget_t *child = display->childWidgets[index];
-            //Try to draw current widget
+            int maxX = child->x + child->scaleX;
+            int maxY = child->y + child->scaleY;
+            //Check if the user has pressed on something
+            if(event.type == ButtonPress)
+            {
+                //Button was pressed, click on the widget between mouse x and y
+                int x = event.xbutton.x;
+                int y = event.xbutton.y;
+                if(((x >= child->x) && (x <= maxX))
+                && ((y >= child->y) && (y <= maxY)))
+                {
+                    //Run its click function if possible
+                    if(child->widgetFunction != NULL)
+                    {
+                        child->widgetFunction(display, child);
+                    }
+                }
+            }
+            //Draw the current widget if possible
             if(child->draw != NULL)
             {
                 child->draw(display, child);

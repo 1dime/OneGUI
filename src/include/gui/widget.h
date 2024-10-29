@@ -10,7 +10,7 @@ struct widget
     int scaleX, scaleY;
     int numChildren;
     void *widgetData;
-    void *(*widgetFunction)(widget_t *); //Any click on widget function
+    void *(*widgetFunction)(widget_t *, widget_t *); //Any click on widget function
     void *(*draw)(widget_t *, widget_t *); //Draws widget on screen
     widget_t **childWidgets;
     property_t *properties; //Set by implementation
