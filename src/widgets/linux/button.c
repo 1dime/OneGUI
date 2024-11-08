@@ -18,10 +18,10 @@ void *draw_button(widget_t *display, widget_t *button)
     //Calculate center for x and y, to add button to
     int x = button->x;
     int y = button->y;
-    int centerX = (x + button->scaleX) / 2;
-    int centerY = (y + button->scaleY) / 2;
+    int centerX = (x + button->width) / 2;
+    int centerY = (y + button->height) / 2;
     //Now, draw a rectangle
-    XDrawRectangle(disp, wind, gc, button->x, button->y, button->scaleX, button->scaleY);
+    XDrawRectangle(disp, wind, gc, button->x, button->y, button->width, button->height);
     XDrawString(disp, wind, gc, centerX, centerY, text, strlen(text));
 }
 

@@ -23,8 +23,8 @@ extern int update(widget_t *display);
 make_display: Creates a window widget
 @param x: x position
 @param y: y position
-@param scaleX: width
-@param scaleY: length
+@param width: width
+@param height: length
 @returns new window widget
 */
 widget_t *make_display(int x, int y, int width, int length, property_t *properties);

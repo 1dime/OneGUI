@@ -1,0 +1,2 @@
+Extend find_raw to include rest of widget structure's data, excluding next and previous nodes;
+Change widget.c to work using widget tree instead of widget array. Have the addChild function simply add to a child widget tree;

@@ -111,8 +111,8 @@ int show_window(widget_t *display)
         {
             //Get current child widget
             widget_t *child = display->childWidgets[index];
-            int maxX = child->x + child->scaleX;
-            int maxY = child->y + child->scaleY;
+            int maxX = child->x + child->width;
+            int maxY = child->y + child->height;
             //Check if the user has pressed on something
             if(event.type == ButtonPress)
             {

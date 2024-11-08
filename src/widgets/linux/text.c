@@ -25,14 +25,14 @@ mk_text: Creates a simple text widget
 @param text: Text widget displays
 @param x: x-position
 @param y: y-position
-@param scaleX: scale of widget, on x axis
-@param scaleY: scale of widget, on y axis
+@param width: scale of widget, on x axis
+@param height: scale of widget, on y axis
 @param parent: Parent widget, if any
 */
-widget_t *mk_text(widget_t *display, const char *text, int x, int y, int scaleX, int scaleY, widget_t *parent)
+widget_t *mk_text(widget_t *display, const char *text, int x, int y, int width, int height, widget_t *parent)
 {
     //Make a new widget
-    widget_t *text_widget = build_widget(x, y, scaleX, scaleY, (void *) text, NULL, draw_text);
+    widget_t *text_widget = build_widget(x, y, width, height, (void *) text, NULL, draw_text);
     
     //Add text widget to parent if it is set
     if(parent != NULL)
