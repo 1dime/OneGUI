@@ -1,1 +1,0 @@
-g++.exe: error: ./mutants/test.mutant.344.cpp -Iinclude -o ./mutants/test.mutant.344: No such file or directory
