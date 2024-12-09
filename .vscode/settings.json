@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "properties.h": "c"
+        "properties.h": "c",
+        "properties": "cpp",
+        "list": "cpp",
+        "node": "cpp",
+        "widget": "cpp",
+        "dict": "cpp",
+        "item": "cpp"
     }
 }

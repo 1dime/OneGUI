@@ -1,2 +1,13 @@
-Extend find_raw to include rest of widget structure's data, excluding next and previous nodes;
-Change widget.c to work using widget tree instead of widget array. Have the addChild function simply add to a child widget tree;
+Use CMake for compilation
+    - Use linker to link all c++ code
+    
+Create a linked list class
+    - Holds node as head
+    - Can add nodes
+    - Can insert nodes at position
+    - Can remove nodes
+
+Create a widget class
+    - Must have widget data
+    - Must have redefinable draw and widgetFunction functions
+    - Must be a linked list
