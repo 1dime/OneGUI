@@ -1,0 +1,71 @@
+./mutants/test.mutant.117.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.117.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.117.cpp: In function 'void testListItem()':
+./mutants/test.mutant.117.cpp:54:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.117.cpp:55:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.117.cpp: In function 'void testList()':
+./mutants/test.mutant.117.cpp:90:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.117.cpp:91:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.117.cpp: In function 'void testJson()':
+./mutants/test.mutant.117.cpp:117:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.117.cpp:118:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.117.cpp: In function 'void testProperty()':
+./mutants/test.mutant.117.cpp:133:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `Z12testListItemv':
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:58: undefined reference to `ListItem::ListItem(void*)'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:59: undefined reference to `ListItem::ListItem(void*)'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:68: undefined reference to `ListItem::getData()'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:71: undefined reference to `ListItem::getData()'
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `Z9listAddedP4ListS0_':
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:83: undefined reference to `ListItem::getData()'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:82: undefined reference to `ListItem::getData()'
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `Z8testListv':
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:96: undefined reference to `ListItem::ListItem(void*)'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:97: undefined reference to `ListItem::ListItem(void*)'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:107: undefined reference to `ListItem::getData()'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:110: undefined reference to `ListItem::getData()'
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `Z11widgetAddedP6WidgetS0_':
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:146: undefined reference to `ListItem::getData()'
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:147: undefined reference to `ListItem::getData()'
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `Z10testWidgetv':
+C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:192: undefined reference to `ListItem::getData()'
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o:C:\Users\ih295\Projects\OneGUI\test/./mutants/test.mutant.117.cpp:202: more undefined references to `ListItem::getData()' follow
+C:\Users\ih295\AppData\Local\Temp\ccPOvIs4.o: In function `ZN8DictItemC1EPKcPv':
+C:\Users\ih295\Projects\OneGUI\test/include/dict/item.hpp:23: undefined reference to `ListItem::ListItem()'
+../bin/list.o: In function `ZN4ListC2Ev':
+C:\Users\ih295\Projects\OneGUI/src/list/list.cpp:9: undefined reference to `ListItem::ListItem()'
+../bin/list.o: In function `ZN4ListC2EP8ListItem':
+C:\Users\ih295\Projects\OneGUI/src/list/list.cpp:21: undefined reference to `ListItem::ListItem()'
+../bin/property.o: In function `ZN8PropertyC2Ev':
+C:\Users\ih295\Projects\OneGUI/src/properties/property.cpp:10: undefined reference to `ListItem::ListItem()'
+../bin/property.o: In function `ZN8PropertyC2EPKcPv':
+C:\Users\ih295\Projects\OneGUI/src/properties/property.cpp:37: undefined reference to `ListItem::ListItem(void*)'
+../bin/property.o: In function `ZN8PropertyC2EP8DictItem':
+C:\Users\ih295\Projects\OneGUI/src/properties/property.cpp:45: undefined reference to `ListItem::ListItem(void*)'
+../bin/property.o: In function `ZN8DictItemC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPv':
+C:\Users\ih295\Projects\OneGUI/src/include/dict/item.hpp:11: undefined reference to `ListItem::ListItem()'
+../bin/widget.o: In function `ZN6WidgetC2Ev':
+C:\Users\ih295\Projects\OneGUI/src/widgets/widget.cpp:8: undefined reference to `ListItem::ListItem()'
+../bin/widget.o: In function `ZN6WidgetC2EiiiiPvP8Property':
+C:\Users\ih295\Projects\OneGUI/src/widgets/widget.cpp:23: undefined reference to `ListItem::ListItem(void*)'
+../bin/widget.o: In function `ZN6WidgetC2EP10WidgetItem':
+C:\Users\ih295\Projects\OneGUI/src/widgets/widget.cpp:31: undefined reference to `ListItem::ListItem(void*)'
+../bin/widget.o: In function `ZN10WidgetItemC1EiiiiPvP8Property':
+C:\Users\ih295\Projects\OneGUI/src/include/widgets/item.hpp:14: undefined reference to `ListItem::ListItem()'
+collect2.exe: error: ld returned 1 exit status

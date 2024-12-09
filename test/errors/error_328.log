@@ -1,0 +1,42 @@
+./mutants/test.mutant.1293.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.1293.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.1293.cpp: In function 'void testListItem()':
+./mutants/test.mutant.1293.cpp:54:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.1293.cpp:55:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.1293.cpp: In function 'void testList()':
+./mutants/test.mutant.1293.cpp:90:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.1293.cpp:91:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.1293.cpp: In function 'void testJson()':
+./mutants/test.mutant.1293.cpp:117:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.1293.cpp:118:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.1293.cpp: In function 'void testProperty()':
+./mutants/test.mutant.1293.cpp:133:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~
+In file included from c:\users\ih295\mingw\lib\gcc\mingw32\6.3.0\include\c++\cassert:44:0,
+                 from include/properties/nlohmann/json.hpp:2555,
+                 from include/properties/property.hpp:9,
+                 from ./mutants/test.mutant.1293.cpp:4:
+./mutants/test.mutant.1293.cpp: In function 'void testWidget()':
+./mutants/test.mutant.1293.cpp:198:132: error: too many arguments to function 'int strcmp(const char*, const char*)'
+     assert( ( (std::strcmp(firstPropKey,"Widget: First Widget: Property: key is not the same", firstWidgetParams->properties->key()) == 0)));
+                                                                                                                                    ^
+In file included from c:\users\ih295\mingw\lib\gcc\mingw32\6.3.0\include\c++\cstring:42:0,
+                 from ./mutants/test.mutant.1293.cpp:2:
+c:\users\ih295\mingw\include\string.h:77:38: note: declared here
+ _CRTIMP __cdecl __MINGW_NOTHROW  int strcmp (const char *, const char *) __MINGW_ATTRIB_PURE;
+                                      ^~~~~~

@@ -1,0 +1,57 @@
+./mutants/test.mutant.108.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.108.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.108.cpp:43:58: error: expected '>' before '<=' token
+     DictItem *item = new DictItem(key, static_cast<void *<=(value));
+                                                          ^~
+./mutants/test.mutant.108.cpp:43:58: error: expected '(' before '<=' token
+./mutants/test.mutant.108.cpp:43:58: error: expected primary-expression before '<=' token
+./mutants/test.mutant.108.cpp:43:67: error: no matching function for call to 'DictItem::DictItem()'
+     DictItem *item = new DictItem(key, static_cast<void *<=(value));
+                                                                   ^
+In file included from include/properties/property.hpp:5:0,
+                 from ./mutants/test.mutant.108.cpp:4:
+include/dict/item.hpp:22:5: note: candidate: DictItem::DictItem(const char*, void*)
+     DictItem(const char *k, void *v)
+     ^~~~~~~~
+include/dict/item.hpp:22:5: note:   candidate expects 2 arguments, 0 provided
+include/dict/item.hpp:16:5: note: candidate: DictItem::DictItem(std::__cxx11::string*, void*)
+     DictItem(std::string *k, void *v)
+     ^~~~~~~~
+include/dict/item.hpp:16:5: note:   candidate expects 2 arguments, 0 provided
+include/dict/item.hpp:10:5: note: candidate: DictItem::DictItem(std::__cxx11::string, void*)
+     DictItem(std::string k, void *v)
+     ^~~~~~~~
+include/dict/item.hpp:10:5: note:   candidate expects 2 arguments, 0 provided
+include/dict/item.hpp:6:8: note: candidate: DictItem::DictItem(const DictItem&)
+ struct DictItem : public ListItem
+        ^~~~~~~~
+include/dict/item.hpp:6:8: note:   candidate expects 1 argument, 0 provided
+include/dict/item.hpp:6:8: note: candidate: DictItem::DictItem(DictItem&&)
+include/dict/item.hpp:6:8: note:   candidate expects 1 argument, 0 provided
+./mutants/test.mutant.108.cpp: In function 'void testListItem()':
+./mutants/test.mutant.108.cpp:54:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.108.cpp:55:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.108.cpp: In function 'void testList()':
+./mutants/test.mutant.108.cpp:90:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.108.cpp:91:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.108.cpp: In function 'void testJson()':
+./mutants/test.mutant.108.cpp:117:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.108.cpp:118:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.108.cpp: In function 'void testProperty()':
+./mutants/test.mutant.108.cpp:133:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~

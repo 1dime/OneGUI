@@ -1,0 +1,113 @@
+./mutants/test.mutant.1254.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.1254.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.1254.cpp: In function 'void testListItem()':
+./mutants/test.mutant.1254.cpp:54:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.1254.cpp:55:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.1254.cpp: In function 'void testList()':
+./mutants/test.mutant.1254.cpp:90:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.1254.cpp:91:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.1254.cpp: In function 'void testJson()':
+./mutants/test.mutant.1254.cpp:117:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.1254.cpp:118:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.1254.cpp: In function 'void testProperty()':
+./mutants/test.mutant.1254.cpp:133:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~
+In file included from c:\users\ih295\mingw\lib\gcc\mingw32\6.3.0\include\c++\cassert:44:0,
+                 from include/properties/nlohmann/json.hpp:2555,
+                 from include/properties/property.hpp:9,
+                 from ./mutants/test.mutant.1254.cpp:4:
+./mutants/test.mutant.1254.cpp: In function 'void testWidget()':
+./mutants/test.mutant.1254.cpp:197:123: error: expected '>' before '%>' token
+     assert(("Widget: First Widget: data is not the same", (std::strcmp(firstWidgetData->c_str(), (static_cast<std::string %>(firstWidgetParams->widgetData))->c_str()) == 0)));
+                                                                                                                           ^
+./mutants/test.mutant.1254.cpp:197:123: error: expected '(' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected primary-expression before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp:197:123: error: expected ')' before '%>' token
+./mutants/test.mutant.1254.cpp: At global scope:
+./mutants/test.mutant.1254.cpp:197:143: error: expected ')' before '->' token
+     assert(("Widget: First Widget: data is not the same", (std::strcmp(firstWidgetData->c_str(), (static_cast<std::string %>(firstWidgetParams->widgetData))->c_str()) == 0)));
+                                                                                                                                               ^
+./mutants/test.mutant.1254.cpp:198:13: error: expected unqualified-id before string constant
+     assert(("Widget: First Widget: Property: key is not the same", (std::strcmp(firstPropKey, firstWidgetParams->properties->key()) == 0)));
+             ^
+./mutants/test.mutant.1254.cpp:198:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:198:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:198:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:199:13: error: expected unqualified-id before string constant
+     assert(("Widget: First Widget: Property: value is not the same", (std::strcmp(firstPropVal->c_str(), firstWidgetParams->properties->valueAsString().c_str()) == 0)));
+             ^
+./mutants/test.mutant.1254.cpp:199:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:199:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:199:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:202:67: error: 'secondWidget' was not declared in this scope
+     WidgetItem *secondWidgetParams = (WidgetItem *) ((ListItem *) secondWidget->getItem())->getData();
+                                                                   ^~~~~~~~~~~~
+In file included from c:\users\ih295\mingw\lib\gcc\mingw32\6.3.0\include\c++\cassert:44:0,
+                 from include/properties/nlohmann/json.hpp:2555,
+                 from include/properties/property.hpp:9,
+                 from ./mutants/test.mutant.1254.cpp:4:
+./mutants/test.mutant.1254.cpp:203:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: x is not the same value", (secondX == secondWidgetParams->x)));
+             ^
+./mutants/test.mutant.1254.cpp:203:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:203:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:203:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:204:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: y is not the same value", (secondY == secondWidgetParams->y)));
+             ^
+./mutants/test.mutant.1254.cpp:204:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:204:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:204:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:205:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: width is not the same value", (secondWidth == secondWidgetParams->width)));
+             ^
+./mutants/test.mutant.1254.cpp:205:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:205:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:205:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:206:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: height is not the same value", (secondHeight == secondWidgetParams->height)));
+             ^
+./mutants/test.mutant.1254.cpp:206:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:206:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:206:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:207:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: data is not the same", (std::strcmp(secondWidgetData->c_str(), (static_cast<std::string *>(secondWidgetParams->widgetData))->c_str()) == 0)));
+             ^
+./mutants/test.mutant.1254.cpp:207:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:207:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:207:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:208:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: Property: key is not the same", (std::strcmp(secondPropKey, secondWidgetParams->properties->key()) == 0)));
+             ^
+./mutants/test.mutant.1254.cpp:208:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:208:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:208:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:209:13: error: expected unqualified-id before string constant
+     assert(("Widget: Second Widget: Property: value is not the same", (std::strcmp(secondPropVal->c_str(), secondWidgetParams->properties->valueAsString().c_str()) == 0)));
+             ^
+./mutants/test.mutant.1254.cpp:209:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:209:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:209:13: error: expected ')' before string constant
+./mutants/test.mutant.1254.cpp:210:1: error: expected declaration before '}' token
+ }
+ ^

@@ -1,0 +1,33 @@
+./mutants/test.mutant.164.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.164.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.164.cpp: At global scope:
+./mutants/test.mutant.164.cpp:49:1: error: expected unqualified-id before 'break'
+ break;
+ ^~~~~
+./mutants/test.mutant.164.cpp: In function 'void testListItem()':
+./mutants/test.mutant.164.cpp:55:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.164.cpp:56:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.164.cpp: In function 'void testList()':
+./mutants/test.mutant.164.cpp:91:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.164.cpp:92:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.164.cpp: In function 'void testJson()':
+./mutants/test.mutant.164.cpp:118:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.164.cpp:119:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.164.cpp: In function 'void testProperty()':
+./mutants/test.mutant.164.cpp:134:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~

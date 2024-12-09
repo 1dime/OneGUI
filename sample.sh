@@ -1,4 +1,5 @@
 reset
+rm -rf bin
 rm -rf **.o **.exe
 mkdir -p bin
 g++ -c src/list/item.cpp -o bin/item.o -Isrc/include -g

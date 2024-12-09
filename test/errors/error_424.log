@@ -1,0 +1,26 @@
+./mutants/test.mutant.138.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.138.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+In file included from c:\users\ih295\mingw\lib\gcc\mingw32\6.3.0\include\c++\cassert:44:0,
+                 from include/properties/nlohmann/json.hpp:2555,
+                 from include/properties/property.hpp:9,
+                 from ./mutants/test.mutant.138.cpp:4:
+./mutants/test.mutant.138.cpp:47:108: error: expected '>' before '%>' token
+     assert(("DictItem: value does not match stored", (std::strcmp(value->c_str(), (static_cast<std::string %>(item->v))->c_str())) == 0));
+                                                                                                            ^
+./mutants/test.mutant.138.cpp:47:108: error: expected '(' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected primary-expression before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp:47:108: error: expected ')' before '%>' token
+./mutants/test.mutant.138.cpp: At global scope:
+./mutants/test.mutant.138.cpp:47:115: error: expected ')' before '->' token
+     assert(("DictItem: value does not match stored", (std::strcmp(value->c_str(), (static_cast<std::string %>(item->v))->c_str())) == 0));
+                                                                                                                   ^
+./mutants/test.mutant.138.cpp:48:1: error: expected declaration before '}' token
+ }
+ ^

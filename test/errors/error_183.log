@@ -1,0 +1,35 @@
+./mutants/test.mutant.1162.cpp: In function 'void testDictItem()':
+./mutants/test.mutant.1162.cpp:41:24: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *valueChars = "Value";
+                        ^~~~~~~
+./mutants/test.mutant.1162.cpp: In function 'void testListItem()':
+./mutants/test.mutant.1162.cpp:54:32: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListDataChars = "Test";
+                                ^~~~~~
+./mutants/test.mutant.1162.cpp:55:33: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListDataChars = "Test2";
+                                 ^~~~~~~
+./mutants/test.mutant.1162.cpp: In function 'void testList()':
+./mutants/test.mutant.1162.cpp:90:27: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *firstListData = "First";
+                           ^~~~~~~
+./mutants/test.mutant.1162.cpp:91:28: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *secondListData = "Second";
+                            ^~~~~~~~
+./mutants/test.mutant.1162.cpp: In function 'void testJson()':
+./mutants/test.mutant.1162.cpp:117:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Key";
+                 ^~~~~
+./mutants/test.mutant.1162.cpp:118:19: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *value = "Value";
+                   ^~~~~~~
+./mutants/test.mutant.1162.cpp: In function 'void testProperty()':
+./mutants/test.mutant.1162.cpp:133:17: warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+     char *key = "Cartoonish";
+                 ^~~~~~~~~~~~
+./mutants/test.mutant.1162.cpp: In function 'void testWidget()':
+./mutants/test.mutant.1162.cpp:182:102: error: expected '>' before '<=' token
+     Widget *secondWidget = new Widget(secondX, secondY, secondWidth, secondHeight, static_cast<void *<=(secondWidgetData), secondProperty);
+                                                                                                      ^~
+./mutants/test.mutant.1162.cpp:182:102: error: expected '(' before '<=' token
+./mutants/test.mutant.1162.cpp:182:102: error: expected primary-expression before '<=' token
