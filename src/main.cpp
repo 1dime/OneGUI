@@ -1,8 +1,13 @@
 #include <cassert>
 #include <cstring>
-#include <string>
+#include <dict/item.hpp>
+#include <list/item.hpp>
+#include <list/list.hpp>
+#include <properties/nlohmann/json.hpp>
 #include <properties/property.hpp>
+#include <widgets/item.hpp>
 #include <widgets/widget.hpp>
+#include <string>
 #include <iostream>
 
 void testDictItem();

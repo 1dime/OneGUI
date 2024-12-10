@@ -1,5 +1,4 @@
+**.txt
 *.txt
 bin/
 examples/
-mutants/
-*mutant*.cpp
