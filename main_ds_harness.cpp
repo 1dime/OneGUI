@@ -1,4 +1,4 @@
-#include <cwassert>
+#include <cassert>
 #include <cstring>
 #include <string>
 #include <properties/property.hpp>
@@ -78,11 +78,9 @@ void testListItem()
     //Now test if the second item was added
     ASSERT(firstItem->next == secondItem) << "ListItem: failed to add second list item to first.";
     //And test the first item's parameters
-    ASSERT(std::strcmp(firstListData->c_str(), (static_cast<std::string *>(firstItem->getData())->c_str())) == 0) << "ListItem: FirstItem: data is not the same";
-    wassert(("ListItem: First Item: data is not the same", (std::strcmp(firstListData->c_str(), (static_cast<std::string *>(firstItem->getData())->c_str())) == 0)));
-
+    ASSERT(std::strcmp(firstListData->c_str(), (static_cast<std::string *>(firstItem->getData())->c_str())) == 0) << "ListItem: First Item: data is not the same";
     //And the second item's parameters
-    wassert(("ListItem: Second Item: data is not the same", (std::strcmp(secondListData->c_str(), (static_cast<std::string *>(secondItem->getData())->c_str())) == 0)));
+    ASSERT(std::strcmp(secondListData->c_str(), (static_cast<std::string *>(secondItem->getData())->c_str())) == 0) << "ListItem: Second Item: data is not the same";
 }
 
 //Checks if a list was added
@@ -114,14 +112,14 @@ void testList()
     firstList->addItem(secondList->getItem());
 
     //And test if the second list was added
-    wassert(("List: failed to add second list to first", (listAdded(firstList, secondList))));
+    ASSERT(listAdded(firstList, secondList)) << "List: failed to add second list to first.";
     firstList->setItem(firstList->getItem()->previous);
 
     //Then test first list's parameters
-    wassert(("List: First List: data is not the same", (std::strcmp(firstListString->c_str(), (static_cast<std::string *>(firstList->getItem()->getData()))->c_str())) == 0));
+    ASSERT((std::strcmp(firstListString->c_str(), (static_cast<std::string *>(firstList->getItem()->getData()))->c_str())) == 0) << "List: First List: data is not the same.";
 
     //And test second list's parameters
-    wassert(("List: Second List: data is not the same", (std::strcmp(secondListString->c_str(), (static_cast<std::string *>(secondList->getItem()->getData()))->c_str())) == 0));
+    ASSERT((std::strcmp(secondListString->c_str(), (static_cast<std::string *>(secondList->getItem()->getData()))->c_str())) == 0) << "List: Second List: data is not the same";
 }
 
 //Tests nlohmann's JSON
@@ -136,8 +134,8 @@ void testJson()
     data[key] = value;
 
     //Now test the data
-    wassert(("Json: key does not match", (data.contains(key) == true)));
-    wassert(("Json: value does not match", ((std::strcmp(value, data[key].get<std::string>().c_str()) == 0))));
+    ASSERT(data.contains(key) == true) << "Json: key does not match";
+    ASSERT(std::strcmp(value, data[key].get<std::string>().c_str()) == 0) << "Json: value does not match";
 }
 
 //Tests the Property class
@@ -151,8 +149,8 @@ void testProperty()
     property->addItem(new DictItem(key, static_cast<void *>(value)));
 
     //Make sure property key and value match
-    wassert(("Property: Key does not match", (std::strcmp(key, property->key()) == 0)));
-    wassert(("Property: Value does not match", (std::strcmp(value->c_str(), property->valueAsString().c_str()) == 0)));
+    ASSERT(std::strcmp(key, property->key()) == 0) << "Property: Key does not match";
+    ASSERT(std::strcmp(value->c_str(), property->valueAsString().c_str()) == 0) << "Property: Value does not match";
 }
 
 //Returns if a widget was added to a widget list
@@ -207,26 +205,26 @@ void testWidget()
     firstWidget->addItem(secondWidget->getItem());
 
     //Test that the second widget was added successfully
-    wassert(("Failed to add second widget to first", (widgetAdded(firstWidget, secondWidget)) == true));
+    ASSERT(widgetAdded(firstWidget, secondWidget)) << "Widget: Failed to add second widget to first.";
     firstWidget->setItem(firstWidget->getItem()->previous);
 
     //Now test the first widget's properties
     WidgetItem *firstWidgetParams = (WidgetItem *) ((ListItem *) firstWidget->getItem())->getData();
-    wassert(("Widget: First Widget: x is not the same value", (firstX == firstWidgetParams->x)));
-    wassert(("Widget: First Widget: y is not the same value", (firstY == firstWidgetParams->y)));
-    wassert(("Widget: First Widget: width is not the same value", (firstWidth == firstWidgetParams->width)));
-    wassert(("Widget: First Widget: height is not the same value", (firstHeight == firstWidgetParams->height)));
-    wassert(("Widget: First Widget: data is not the same", (std::strcmp(firstWidgetData->c_str(), (static_cast<std::string *>(firstWidgetParams->widgetData))->c_str()) == 0)));
-    wassert(("Widget: First Widget: Property: key is not the same", (std::strcmp(firstPropKey, firstWidgetParams->properties->key()) <= 0)));
-    wassert(("Widget: First Widget: Property: value is not the same", (std::strcmp(firstPropVal->c_str(), firstWidgetParams->properties->valueAsString().c_str()) == 0)));
+    ASSERT(firstX == firstWidgetParams->x) << "Widget: First Widget: x is not the same value.";
+    ASSERT(firstY == firstWidgetParams->y) << "Widget: First Widget: y is not the same value.";
+    ASSERT(firstWidth == firstWidgetParams->width) << "Widget: First Widget: width is not the same.";
+    ASSERT(firstHeight == firstWidgetParams->height) << "Widget: First Widget: height is not the same value.";
+    ASSERT(std::strcmp(firstWidgetData->c_str(), (static_cast<std::string *>(firstWidgetParams->widgetData))->c_str()) == 0) << "Widget: First Widget: data is not the same";
+    ASSERT((std::strcmp(firstPropKey, firstWidgetParams->properties->key()) == 0)) << "Widget: First Widget: Property: key is not the same";
+    ASSERT((std::strcmp(firstPropVal->c_str(), firstWidgetParams->properties->valueAsString().c_str()) == 0)) << "Widget: First Widget: Property: value is not the same";
 
     //And test the second widget's properties
     WidgetItem *secondWidgetParams = (WidgetItem *) ((ListItem *) secondWidget->getItem())->getData();
-    wassert(("Widget: Second Widget: x is not the same value", (secondX == secondWidgetParams->x)));
-    wassert(("Widget: Second Widget: y is not the same value", (secondY == secondWidgetParams->y)));
-    wassert(("Widget: Second Widget: width is not the same value", (secondWidth == secondWidgetParams->width)));
-    wassert(("Widget: Second Widget: height is not the same value", (secondHeight == secondWidgetParams->height)));
-    wassert(("Widget: Second Widget: data is not the same", (std::strcmp(secondWidgetData->c_str(), (static_cast<std::string *>(secondWidgetParams->widgetData))->c_str()) == 0)));
-    wassert(("Widget: Second Widget: Property: key is not the same", (std::strcmp(secondPropKey, secondWidgetParams->properties->key()) == 0)));
-    wassert(("Widget: Second Widget: Property: value is not the same", (std::strcmp(secondPropVal->c_str(), secondWidgetParams->properties->valueAsString().c_str()) == 0)));
+    ASSERT(secondX == secondWidgetParams->x) << "Widget: Second Widget: x is not the same value.";
+    ASSERT(secondY == secondWidgetParams->y) << "Widget: Second Widget: y is not the same value.";
+    ASSERT(secondWidth == secondWidgetParams->width) << "Widget: Second Widget: width is not the same.";
+    ASSERT(secondHeight == secondWidgetParams->height) << "Widget: Second Widget: height is not the same value.";
+    ASSERT(std::strcmp(secondWidgetData->c_str(), (static_cast<std::string *>(secondWidgetParams->widgetData))->c_str()) == 0) << "Widget: Second Widget: data is not the same";
+    ASSERT((std::strcmp(secondPropKey, secondWidgetParams->properties->key()) == 0)) << "Widget: Second Widget: Property: key is not the same";
+    ASSERT((std::strcmp(secondPropVal->c_str(), secondWidgetParams->properties->valueAsString().c_str()) == 0)) << "Widget: Second Widget: Property: value is not the same";
 }
