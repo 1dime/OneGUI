@@ -1,0 +1,429 @@
+        -:    0:Source:main_ds_harness.cpp
+        -:    0:Graph:main_ds_harness.gcno
+        -:    0:Data:main_ds_harness.gcda
+        -:    0:Runs:1364
+        -:    0:Programs:1
+        -:    1:#include <deepstate/DeepState.hpp>
+        -:    2:#include <cstring>
+        -:    3:#include <string>
+        -:    4:#include <properties/property.hpp>
+        -:    5:#include <widgets/widget.hpp>
+        -:    6:#include <iostream>
+        -:    7:
+        -:    8:using namespace deepstate;
+        -:    9:
+        -:   10:void testDictItem();
+        -:   11:void testListItem();
+        -:   12:void testList();
+        -:   13:void testJson();
+        -:   14:void testProperty();
+        -:   15:void testWidget();
+        -:   16:
+function __cxx_global_var_init.5 called 1364 returned 100% blocks executed 100%
+function _ZN32DeepState_Register_Main_Basic_t_C2Ev called 1364 returned 100% blocks executed 100%
+function _ZL29DeepState_Register_Main_Basicv called 1364 returned 100% blocks executed 100%
+function _ZL24DeepState_Run_Main_Basicv called 1362 returned 0% blocks executed 50%
+function _ZL25DeepState_Test_Main_Basicv called 1362 returned 100% blocks executed 100%
+     6816:   17:TEST(Main, Basic)
+        -:   18:{
+        -:   19:    //Test the dict item class
+     1362:   20:    testDictItem();
+        -:   21:
+        -:   22:    //And test the list item class
+     1362:   23:    testListItem();
+        -:   24:
+        -:   25:    //Now test the list class
+     1362:   26:    testList();
+        -:   27:
+        -:   28:    //And test the JSON class (by nlohmann)
+     1362:   29:    testJson();
+        -:   30:
+        -:   31:    //Then test the property class
+     1362:   32:    testProperty();
+        -:   33:
+        -:   34:    //And the widget class
+     1362:   35:    testWidget();
+     1362:   36:}
+        -:   37:
+        -:   38://Creates a new string using deepstate
+function _Z12makeDSStringm called 21792 returned 100% blocks executed 100%
+    21792:   39:char *makeDSString(size_t size)
+        -:   40:{
+    21792:   41:  char *str = (char *) DeepState_Malloc(size);
+   108960:   42:  for(int index = 0; index < size; index++)
+branch  0 taken 20%
+branch  1 taken 80%
+        -:   43:  {
+    87168:   44:    str[index] = DeepState_Char();
+        -:   45:  }
+        -:   46:  
+        -:   47:  //Return the string
+    21792:   48:  return str;
+        -:   49:}
+        -:   50:
+        -:   51://Tests the DictItem structure
+function _Z12testDictItemv called 1362 returned 100% blocks executed 46%
+     1362:   52:void testDictItem()
+        -:   53:{
+        -:   54:    //Create a new DictItem
+     1362:   55:    char *key = makeDSString(4);
+     1362:   56:    char *valueChars = makeDSString(4);
+        -:   57:    
+     1362:   58:    std::string *value = new std::string(valueChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:   59:    DictItem *item = new DictItem(key, static_cast<void *>(value));
+branch  0 taken 100%
+branch  1 taken 0%
+        -:   60:
+        -:   61:    //And test if the key and value match
+     1362:   62:    ASSERT((std::strcmp(key, item->k.c_str())) == 0) << "DictItem: key does not match stored.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:   63:    ASSERT((std::strcmp(value->c_str(), (static_cast<std::string *>(item->v))->c_str())) == 0) << "DictItem: value does not match stored.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:   64:}
+        -:   65:
+        -:   66://Tests ListItem structure
+function _Z12testListItemv called 1362 returned 100% blocks executed 40%
+     1362:   67:void testListItem()
+        -:   68:{
+        -:   69:    //Create two new list items
+     1362:   70:    char *firstListDataChars = makeDSString(4);
+     1362:   71:    char *secondListDataChars = makeDSString(4);
+     1362:   72:    std::string *firstListData = new std::string(firstListDataChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:   73:    std::string *secondListData = new std::string(secondListDataChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:   74:    ListItem *firstItem = new ListItem(static_cast<void *>(firstListData));
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:   75:    ListItem *secondItem = new ListItem(static_cast<void *>(secondListData));
+branch  0 taken 100%
+branch  1 taken 0%
+        -:   76:
+        -:   77:    //Add second item to first
+     1362:   78:    firstItem->next = secondItem;
+        -:   79:
+        -:   80:    //Now test if the second item was added
+     1362:   81:    ASSERT(firstItem->next == secondItem) << "ListItem: failed to add second list item to first.";
+branch  0 taken 100%
+branch  1 taken 0%
+        -:   82:    //And test the first item's parameters
+     1362:   83:    ASSERT(std::strcmp(firstListData->c_str(), (static_cast<std::string *>(firstItem->getData())->c_str())) == 0) << "ListItem: First Item: data is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+        -:   84:    //And the second item's parameters
+     1362:   85:    ASSERT(std::strcmp(secondListData->c_str(), (static_cast<std::string *>(secondItem->getData())->c_str())) == 0) << "ListItem: Second Item: data is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:   86:}
+        -:   87:
+        -:   88://Checks if a list was added
+function _Z9listAddedP4ListS0_ called 1362 returned 100% blocks executed 100%
+     1362:   89:bool listAdded(List *head, List *list)
+        -:   90:{
+        -:   91:    //Get items from both lists
+     1362:   92:    ListItem *headItem = (ListItem *) head->getItem();
+     1362:   93:    ListItem *listItem = (ListItem *) list->getItem();
+        -:   94:
+        -:   95:    //And return if they are equal
+     4086:   96:    return std::strcmp((static_cast<std::string *>(headItem->getData()))->c_str(),
+     2724:   97:                    (static_cast<std::string *>(listItem->getData()))->c_str()) == 0;
+        -:   98:}
+        -:   99:
+        -:  100://Tests List class
+function _Z8testListv called 1362 returned 100% blocks executed 43%
+     1362:  101:void testList()
+        -:  102:{
+        -:  103:    //Create the parameters for two lists
+     1362:  104:    char *firstListData = makeDSString(4);
+     1362:  105:    char *secondListData = makeDSString(4);
+     1362:  106:    std::string *firstListString = new std::string(firstListData);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:  107:    std::string *secondListString = new std::string(secondListData);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+        -:  108:
+        -:  109:    //And create two lists
+     1362:  110:    List *firstList = new List(new ListItem(static_cast<void *>(firstListString)));
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+     1362:  111:    List *secondList = new List(new ListItem(static_cast<void *>(secondListString)));
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+        -:  112:
+        -:  113:    //Now add second list to first
+     1362:  114:    firstList->addItem(secondList->getItem());
+        -:  115:
+        -:  116:    //And test if the second list was added
+     1362:  117:    ASSERT(listAdded(firstList, secondList)) << "List: failed to add second list to first.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  118:    firstList->setItem(firstList->getItem()->previous);
+        -:  119:
+        -:  120:    //Then test first list's parameters
+     1362:  121:    ASSERT((std::strcmp(firstListString->c_str(), (static_cast<std::string *>(firstList->getItem()->getData()))->c_str())) == 0) << "List: First List: data is not the same.";
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  122:
+        -:  123:    //And test second list's parameters
+     1362:  124:    ASSERT((std::strcmp(secondListString->c_str(), (static_cast<std::string *>(secondList->getItem()->getData()))->c_str())) == 0) << "List: Second List: data is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  125:}
+        -:  126:
+        -:  127://Tests nlohmann's JSON
+function _Z8testJsonv called 1362 returned 100% blocks executed 50%
+     1362:  128:void testJson()
+        -:  129:{
+        -:  130:    //Create a simple key and value for json
+     1362:  131:    char *key = makeDSString(4);
+     1362:  132:    char *value = makeDSString(4);
+        -:  133:
+        -:  134:    //And add them to new json element
+     1362:  135:    nlohmann::json data;
+     1362:  136:    data[key] = value;
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+        -:  137:
+        -:  138:    //Now test the data
+     1362:  139:    ASSERT(data.contains(key) == true) << "Json: key does not match";
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+     1362:  140:    ASSERT(std::strcmp(value, data[key].get<std::string>().c_str()) == 0) << "Json: value does not match";
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+branch  6 taken 100%
+branch  7 taken 0%
+     1362:  141:}
+        -:  142:
+        -:  143://Tests the Property class
+function _Z12testPropertyv called 1362 returned 100% blocks executed 44%
+     1362:  144:void testProperty()
+        -:  145:{
+        -:  146:    //Create a basic property
+     1362:  147:    char *key = makeDSString(4);
+     1362:  148:    char *valueChars = makeDSString(4);
+     1362:  149:    std::string *value = new std::string(valueChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:  150:    Property *property = new Property();
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  151:    property->addItem(new DictItem(key, static_cast<void *>(value)));
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  152:
+        -:  153:    //Make sure property key and value match
+     1362:  154:    ASSERT(std::strcmp(key, property->key()) == 0) << "Property: Key does not match";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  155:    ASSERT(std::strcmp(value->c_str(), property->valueAsString().c_str()) == 0) << "Property: Value does not match";
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+     1362:  156:}
+        -:  157:
+        -:  158://Returns if a widget was added to a widget list
+function _Z11widgetAddedP6WidgetS0_ called 1362 returned 100% blocks executed 72%
+     1362:  159:bool widgetAdded(Widget *head, Widget *widget)
+        -:  160:{
+     1362:  161:    WidgetItem *headItems = (WidgetItem *) ((ListItem *) head->getItem())->getData();
+     1362:  162:    WidgetItem *widgetItems = (WidgetItem *) ((ListItem *) widget->getItem())->getData();
+     2724:  163:    return ((headItems->x == widgetItems->x)
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+branch  6 taken 100%
+branch  7 taken 0%
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+     1362:  164:        && (headItems->y == widgetItems->y)
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  165:        && (headItems->width == widgetItems->width)
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  166:        && (headItems->height == widgetItems->height)
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  167:        && (std::strcmp(((std::string *) headItems->widgetData)->c_str(), ((std::string *) widgetItems->widgetData)->c_str()) == 0)
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  168:        && (std::strcmp(headItems->properties->key(), widgetItems->properties->key()) == 0)
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  169:        && (std::strcmp(headItems->properties->valueAsString().c_str(), widgetItems->properties->valueAsString().c_str()) == 0));
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+     1362:  170:}
+        -:  171:
+        -:  172://Tests widget structure
+function _Z10testWidgetv called 1362 returned 100% blocks executed 40%
+     1362:  173:void testWidget()
+        -:  174:{
+        -:  175:    //Create parameters for two widgets
+     1362:  176:    char *firstDataChars = makeDSString(4);
+     1362:  177:    char *secondDataChars = makeDSString(4);
+     1362:  178:    char *firstPropChars = makeDSString(4);
+     1362:  179:    char *secondPropChars = makeDSString(4);
+     1362:  180:    int firstX = DeepState_Int();
+     1362:  181:    int secondX = DeepState_Int();
+     1362:  182:    int firstY = DeepState_Int();
+     1362:  183:    int secondY = DeepState_Int();
+     1362:  184:    int firstWidth = DeepState_Int();
+     1362:  185:    int secondWidth = DeepState_Int();
+     1362:  186:    int firstHeight = DeepState_Int();
+     1362:  187:    int secondHeight = DeepState_Int();
+        -:  188:    
+     1362:  189:    std::string *firstWidgetData = new std::string(firstDataChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:  190:    std::string *secondWidgetData = new std::string(secondDataChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+        -:  191:    
+     1362:  192:    char *firstPropKey = (char *) makeDSString(4);
+     1362:  193:    char *secondPropKey = (char *) makeDSString(4);
+        -:  194:    
+     1362:  195:    std::string *firstPropVal = new std::string(firstPropChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:  196:    std::string *secondPropVal = new std::string(secondPropChars);
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 never executed
+branch  3 never executed
+     1362:  197:    Property *firstProperty = new Property();
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  198:    firstProperty->addItem(new DictItem(firstPropKey, static_cast<void *>(firstPropVal)));
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  199:    Property *secondProperty = new Property();
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  200:    secondProperty->addItem(new DictItem(secondPropKey, static_cast<void *>(secondPropVal)));
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  201:
+        -:  202:    //And create the two widgets
+     1362:  203:    Widget *firstWidget = new Widget(firstX, firstY, firstWidth, firstHeight, static_cast<void *>(firstWidgetData), firstProperty);
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  204:    Widget *secondWidget = new Widget(secondX, secondY, secondWidth, secondHeight, static_cast<void *>(secondWidgetData), secondProperty);
+branch  0 taken 100%
+branch  1 taken 0%
+        -:  205:
+        -:  206:    //Now add the second widget to the first
+     1362:  207:    firstWidget->addItem(secondWidget->getItem());
+        -:  208:
+        -:  209:    //Test that the second widget was added successfully
+     1362:  210:    ASSERT(widgetAdded(firstWidget, secondWidget)) << "Widget: Failed to add second widget to first.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  211:    firstWidget->setItem(firstWidget->getItem()->previous);
+        -:  212:
+        -:  213:    //Now test the first widget's properties
+     1362:  214:    WidgetItem *firstWidgetParams = (WidgetItem *) ((ListItem *) firstWidget->getItem())->getData();
+     1362:  215:    ASSERT(firstX == firstWidgetParams->x) << "Widget: First Widget: x is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  216:    ASSERT(firstY == firstWidgetParams->y) << "Widget: First Widget: y is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  217:    ASSERT(firstWidth == firstWidgetParams->width) << "Widget: First Widget: width is not the same.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  218:    ASSERT(firstHeight == firstWidgetParams->height) << "Widget: First Widget: height is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  219:    ASSERT(std::strcmp(firstWidgetData->c_str(), (static_cast<std::string *>(firstWidgetParams->widgetData))->c_str()) == 0) << "Widget: First Widget: data is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  220:    ASSERT((std::strcmp(firstPropKey, firstWidgetParams->properties->key()) == 0)) << "Widget: First Widget: Property: key is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  221:    ASSERT((std::strcmp(firstPropVal->c_str(), firstWidgetParams->properties->valueAsString().c_str()) == 0)) << "Widget: First Widget: Property: value is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+        -:  222:
+        -:  223:    //And test the second widget's properties
+     1362:  224:    WidgetItem *secondWidgetParams = (WidgetItem *) ((ListItem *) secondWidget->getItem())->getData();
+     1362:  225:    ASSERT(secondX == secondWidgetParams->x) << "Widget: Second Widget: x is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  226:    ASSERT(secondY == secondWidgetParams->y) << "Widget: Second Widget: y is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  227:    ASSERT(secondWidth == secondWidgetParams->width) << "Widget: Second Widget: width is not the same.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  228:    ASSERT(secondHeight == secondWidgetParams->height) << "Widget: Second Widget: height is not the same value.";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  229:    ASSERT(std::strcmp(secondWidgetData->c_str(), (static_cast<std::string *>(secondWidgetParams->widgetData))->c_str()) == 0) << "Widget: Second Widget: data is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  230:    ASSERT((std::strcmp(secondPropKey, secondWidgetParams->properties->key()) == 0)) << "Widget: Second Widget: Property: key is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+     1362:  231:    ASSERT((std::strcmp(secondPropVal->c_str(), secondWidgetParams->properties->valueAsString().c_str()) == 0)) << "Widget: Second Widget: Property: value is not the same";
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+     1362:  232:}

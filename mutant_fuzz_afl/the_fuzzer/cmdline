@@ -1,0 +1,6 @@
+/home/user/OneGUI/mutant_afl
+--input_stdin
+--abort_on_fail
+--no_fork
+--min_log_level
+2

@@ -1,0 +1,183 @@
+        -:    0:Source:/usr/local/include/deepstate/Stream.hpp
+        -:    0:Graph:main_ds_harness.gcno
+        -:    0:Data:main_ds_harness.gcda
+        -:    0:Runs:1364
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Copyright (c) 2019 Trail of Bits, Inc.
+        -:    3: *
+        -:    4: * Licensed under the Apache License, Version 2.0 (the "License");
+        -:    5: * you may not use this file except in compliance with the License.
+        -:    6: * You may obtain a copy of the License at
+        -:    7: *
+        -:    8: *     http://www.apache.org/licenses/LICENSE-2.0
+        -:    9: *
+        -:   10: * Unless required by applicable law or agreed to in writing, software
+        -:   11: * distributed under the License is distributed on an "AS IS" BASIS,
+        -:   12: * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        -:   13: * See the License for the specific language governing permissions and
+        -:   14: * limitations under the License.
+        -:   15: */
+        -:   16:#ifndef SRC_INCLUDE_DEEPSTATE_STREAM_HPP_
+        -:   17:#define SRC_INCLUDE_DEEPSTATE_STREAM_HPP_
+        -:   18:
+        -:   19:#include <deepstate/DeepState.h>
+        -:   20:#include <deepstate/Stream.h>
+        -:   21:
+        -:   22:#include <cstddef>
+        -:   23:#include <string>
+        -:   24:#include <type_traits>
+        -:   25:
+        -:   26:namespace deepstate {
+        -:   27:
+        -:   28:/* Conditionally stream output to a log using the streaming APIs. */
+        -:   29:class Stream {
+        -:   30: public:
+function _ZN9deepstate6StreamC2E18DeepState_LogLevelbPKcj called 36774 returned 100% blocks executed 75%
+    36774:   31:  DEEPSTATE_INLINE Stream(DeepState_LogLevel level_, bool do_log_,
+        -:   32:                          const char *file, unsigned line)
+    36774:   33:      : level(level_),
+    36774:   34:        do_log(!!DeepState_IsTrue(do_log_)),
+    36774:   35:        has_something_to_log(false) {
+    36774:   36:    DeepState_LogStream(level);
+    36774:   37:    if (do_log) {
+branch  0 taken 0%
+branch  1 taken 100%
+    #####:   38:      DeepState_StreamFormat(level, "%s(%u): ", file, line);
+    #####:   39:    }
+    36774:   40:  }
+        -:   41:
+function _ZN9deepstate6StreamD2Ev called 36774 returned 100% blocks executed 42%
+    36774:   42:  DEEPSTATE_INLINE ~Stream() {
+    36774:   43:    if (do_log) {
+branch  0 taken 0%
+branch  1 taken 100%
+    #####:   44:      if (!has_something_to_log) {
+branch  0 never executed
+branch  1 never executed
+    #####:   45:        DeepState_StreamCStr(level, "Checked condition");
+branch  0 never executed
+branch  1 never executed
+        -:   46:      }
+    #####:   47:      DeepState_LogStream(level);
+branch  0 never executed
+branch  1 never executed
+        -:   48:    }
+    36774:   49:  }
+        -:   50:
+        -:   51:  // The issue being addressed here is that there is a many-to-one mapping from the C integral types
+        -:   52:  // (note 1) to the DeepState integral types (note 2). To address this, we define a operator<< for
+        -:   53:  // each C integral type which invokes a helper method overloaded on size and unsignedness.
+        -:   54:  // This helper method then invokes the correct DeepState_StreamXXX method. Adding a level of
+        -:   55:  // indirection allows us to deal with the many-to-one mapping problem without worrying about
+        -:   56:  // multiply-defining a method or leaving one out. For example on many systems, because long
+        -:   57:  // and long long have the same size, operator<<(long) and operator<<(long long) will both invoke
+        -:   58:  // Stream_IntType_Helper(8, false, int64_t).
+        -:   59:  //
+        -:   60:  // Example:
+        -:   61:  // On my system unsigned short has size 2 and is unsigned. So operator<<(unsigned short val) will call
+        -:   62:  // Stream_IntType_Helper(IC<2>, IB<true>, uint16_t val)
+        -:   63:  // where IC<2> is shorthand for std::integral_constant<size_t, 2> (operand has size 2)
+        -:   64:  // and IB<true> is shorthand for std::integral_constant<bool, true> (operand is unsigned).
+        -:   65:  // These strange-looking types are used for "dispatching on tag" so the compiler can pick the
+        -:   66:  // correct overload of Stream_IntType_Helper at compile time.
+        -:   67:  // Finally Stream_IntType_Helper(IC<2>, IB<true>, uint16_t val) will call
+        -:   68:  // Deepstate_Stream_Uint16(level, val)
+        -:   69:  //
+        -:   70:  // Note 1: char, signed char, unsigned char (yes there are three), short, unsigned short,
+        -:   71:  //   int, unsigned int, long, unsigned long, long long, unsigned long long.
+        -:   72:  // Note2: int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t, uint64_t.
+        -:   73:
+        -:   74:#define DEEPSTATE_DEFINE_CTYPE_STREAMER(CType) \
+        -:   75:  DEEPSTATE_INLINE const Stream &operator<<(CType val) const { \
+        -:   76:    if (do_log) { \
+        -:   77:      auto sizeTag = std::integral_constant<size_t, sizeof(CType)>(); \
+        -:   78:      auto unsignedTag = std::is_unsigned<CType>(); \
+        -:   79:      Stream_IntType_Helper(sizeTag, unsignedTag, val); \
+        -:   80:      has_something_to_log = true; \
+        -:   81:    } \
+        -:   82:    return *this; \
+        -:   83:  } \
+        -:   84:  static_assert(true, "") /* force caller to supply a final semicolon */
+        -:   85:
+        -:   86:  DEEPSTATE_DEFINE_CTYPE_STREAMER(char);
+        -:   87:  DEEPSTATE_DEFINE_CTYPE_STREAMER(signed char);
+        -:   88:  DEEPSTATE_DEFINE_CTYPE_STREAMER(unsigned char);
+        -:   89:  DEEPSTATE_DEFINE_CTYPE_STREAMER(short);
+        -:   90:  DEEPSTATE_DEFINE_CTYPE_STREAMER(unsigned short);
+        -:   91:  DEEPSTATE_DEFINE_CTYPE_STREAMER(int);
+        -:   92:  DEEPSTATE_DEFINE_CTYPE_STREAMER(unsigned int);
+        -:   93:  DEEPSTATE_DEFINE_CTYPE_STREAMER(long);
+        -:   94:  DEEPSTATE_DEFINE_CTYPE_STREAMER(unsigned long);
+        -:   95:  DEEPSTATE_DEFINE_CTYPE_STREAMER(long long);
+        -:   96:  DEEPSTATE_DEFINE_CTYPE_STREAMER(unsigned long long);
+        -:   97:#undef DEEPSTATE_DEFINE_CTYPE_STREAMER
+        -:   98:
+        -:   99:private:
+        -:  100:#define DEEPSTATE_DEFINE_INT_STREAMER_HELPER(CType, DSType) \
+        -:  101:  void Stream_IntType_Helper(std::integral_constant<size_t, sizeof(CType)> /*size_tag*/, \
+        -:  102:      std::integral_constant<bool, std::is_unsigned<CType>::value> /*unsigned_tag*/, \
+        -:  103:      CType val) const { \
+        -:  104:    DeepState_Stream ## DSType(level, val); \
+        -:  105:  } \
+        -:  106:  static_assert(true, "") /* force caller to supply a final semicolon */
+        -:  107:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(int8_t, Int8);
+        -:  108:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(uint8_t, UInt8);
+        -:  109:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(int16_t, Int16);
+        -:  110:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(uint16_t, UInt16);
+        -:  111:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(int32_t, Int32);
+        -:  112:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(uint32_t, UInt32);
+        -:  113:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(int64_t, Int64);
+        -:  114:  DEEPSTATE_DEFINE_INT_STREAMER_HELPER(uint64_t, UInt64);
+        -:  115:#undef DEEPSTATE_DEFINE_INT_STREAMER_HELPER
+        -:  116:public:
+        -:  117:
+        -:  118:#define DEEPSTATE_DEFINE_STREAMER(Type, type, expr) \
+        -:  119:  DEEPSTATE_INLINE const Stream &operator<<(type val) const { \
+        -:  120:    if (do_log) { \
+        -:  121:      DeepState_Stream ## Type(level, expr); \
+        -:  122:      has_something_to_log = true; \
+        -:  123:    } \
+        -:  124:    return *this; \
+        -:  125:  } \
+        -:  126:  static_assert(true, "") /* force our user to supply a final semicolon */
+        -:  127:
+        -:  128:  DEEPSTATE_DEFINE_STREAMER(Float, float, val);
+        -:  129:  DEEPSTATE_DEFINE_STREAMER(Double, double, val);
+        -:  130:
+function _ZNK9deepstate6StreamlsEPKc called 36774 returned 100% blocks executed 75%
+    36774:  131:  DEEPSTATE_DEFINE_STREAMER(CStr, const char *, val);
+branch  0 taken 0%
+branch  1 taken 100%
+        -:  132:
+        -:  133:  DEEPSTATE_DEFINE_STREAMER(Pointer, std::nullptr_t, nullptr);
+        -:  134:
+        -:  135:  template <typename T>
+        -:  136:  DEEPSTATE_DEFINE_STREAMER(Pointer, const T *, val);
+        -:  137:
+        -:  138:#undef DEEPSTATE_DEFINE_STREAMER
+        -:  139:
+        -:  140:  DEEPSTATE_INLINE const Stream &operator<<(const std::string &str) const {
+        -:  141:    if (do_log && !str.empty()) {
+        -:  142:      DeepState_StreamCStr(level, str.c_str());
+        -:  143:      has_something_to_log = true;
+        -:  144:    }
+        -:  145:    return *this;
+        -:  146:  }
+        -:  147:
+        -:  148:  // TODO(pag): Implement a `std::wstring` streamer.
+        -:  149:
+        -:  150: public:
+        -:  151:  Stream() = delete;
+        -:  152:  Stream(const Stream &) = delete;
+        -:  153:  Stream &operator=(const Stream &) = delete;
+        -:  154:
+        -:  155:private:
+        -:  156:  const DeepState_LogLevel level;
+        -:  157:  const bool do_log;
+        -:  158:  mutable bool has_something_to_log;
+        -:  159:};
+        -:  160:
+        -:  161:}  // namespace deepstate
+        -:  162:
+        -:  163:#endif  // SRC_INCLUDE_DEEPSTATE_STREAM_HPP_

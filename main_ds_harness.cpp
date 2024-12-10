@@ -1,9 +1,11 @@
-#include <cassert>
+#include <deepstate/DeepState.hpp>
 #include <cstring>
 #include <string>
 #include <properties/property.hpp>
 #include <widgets/widget.hpp>
 #include <iostream>
+
+using namespace deepstate;
 
 void testDictItem();
 void testListItem();
@@ -51,14 +53,14 @@ void testDictItem()
 {
     //Create a new DictItem
     char *key = makeDSString(4);
-    char *value = makeDSString(4);
+    char *valueChars = makeDSString(4);
     
     std::string *value = new std::string(valueChars);
     DictItem *item = new DictItem(key, static_cast<void *>(value));
 
     //And test if the key and value match
-    ASSERT(std::strcmp(key, item->k.c_str())) == 0) << "DictItem: key does not match stored.";
-    ASSERT(std::strcmp(value->c_str(), (static_cast<std::string *>(item->v))->c_str())) == 0) << "DictItem: value does not match stored.";
+    ASSERT((std::strcmp(key, item->k.c_str())) == 0) << "DictItem: key does not match stored.";
+    ASSERT((std::strcmp(value->c_str(), (static_cast<std::string *>(item->v))->c_str())) == 0) << "DictItem: value does not match stored.";
 }
 
 //Tests ListItem structure
@@ -143,8 +145,8 @@ void testProperty()
 {
     //Create a basic property
     char *key = makeDSString(4);
-    char *value = makeDSString(4);
-    std::string *value = new std::string(value);
+    char *valueChars = makeDSString(4);
+    std::string *value = new std::string(valueChars);
     Property *property = new Property();
     property->addItem(new DictItem(key, static_cast<void *>(value)));
 

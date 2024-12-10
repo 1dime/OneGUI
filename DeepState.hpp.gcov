@@ -1,0 +1,949 @@
+        -:    0:Source:/usr/local/include/deepstate/DeepState.hpp
+        -:    0:Graph:main_ds_harness.gcno
+        -:    0:Data:main_ds_harness.gcda
+        -:    0:Runs:1364
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Copyright (c) 2019 Trail of Bits, Inc.
+        -:    3: *
+        -:    4: * Licensed under the Apache License, Version 2.0 (the "License");
+        -:    5: * you may not use this file except in compliance with the License.
+        -:    6: * You may obtain a copy of the License at
+        -:    7: *
+        -:    8: *     http://www.apache.org/licenses/LICENSE-2.0
+        -:    9: *
+        -:   10: * Unless required by applicable law or agreed to in writing, software
+        -:   11: * distributed under the License is distributed on an "AS IS" BASIS,
+        -:   12: * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        -:   13: * See the License for the specific language governing permissions and
+        -:   14: * limitations under the License.
+        -:   15: */
+        -:   16:
+        -:   17:#ifndef SRC_INCLUDE_DEEPSTATE_DEEPSTATE_HPP_
+        -:   18:#define SRC_INCLUDE_DEEPSTATE_DEEPSTATE_HPP_
+        -:   19:
+        -:   20:#include <deepstate/DeepState.h>
+        -:   21:#include <deepstate/Stream.hpp>
+        -:   22:
+        -:   23:#include <functional>
+        -:   24:#include <string>
+        -:   25:#include <type_traits>
+        -:   26:#include <utility>
+        -:   27:#include <vector>
+        -:   28:
+        -:   29:namespace deepstate {
+        -:   30:
+        -:   31:DEEPSTATE_INLINE static void *Malloc(size_t num_bytes) {
+        -:   32:  return DeepState_Malloc(num_bytes);
+        -:   33:}
+        -:   34:
+        -:   35:DEEPSTATE_INLINE static void SymbolizeData(void *begin, void *end) {
+        -:   36:  DeepState_SymbolizeData(begin, end);
+        -:   37:}
+        -:   38:
+        -:   39:DEEPSTATE_INLINE static bool Bool(void) {
+        -:   40:  return static_cast<bool>(DeepState_Bool());
+        -:   41:}
+        -:   42:
+        -:   43:DEEPSTATE_INLINE static size_t Size(void) {
+        -:   44:  return DeepState_Size();
+        -:   45:}
+        -:   46:
+        -:   47:DEEPSTATE_INLINE static uint64_t UInt64(void) {
+        -:   48:  return DeepState_UInt64();
+        -:   49:}
+        -:   50:
+        -:   51:DEEPSTATE_INLINE static int64_t Int64(void) {
+        -:   52:  return DeepState_Int64();
+        -:   53:}
+        -:   54:
+        -:   55:DEEPSTATE_INLINE static uint32_t UInt(void) {
+        -:   56:  return DeepState_UInt();
+        -:   57:}
+        -:   58:
+        -:   59:DEEPSTATE_INLINE static int32_t Int(void) {
+        -:   60:  return DeepState_Int();
+        -:   61:}
+        -:   62:
+        -:   63:DEEPSTATE_INLINE static uint16_t UShort(void) {
+        -:   64:  return DeepState_UShort();
+        -:   65:}
+        -:   66:
+        -:   67:DEEPSTATE_INLINE static int16_t Short(void) {
+        -:   68:  return DeepState_Short();
+        -:   69:}
+        -:   70:
+        -:   71:DEEPSTATE_INLINE static unsigned char UChar(void) {
+        -:   72:  return DeepState_UChar();
+        -:   73:}
+        -:   74:
+        -:   75:DEEPSTATE_INLINE static char Char(void) {
+        -:   76:  return DeepState_Char();
+        -:   77:}
+        -:   78:
+        -:   79:DEEPSTATE_INLINE static bool IsSymbolic(uint64_t x) {
+        -:   80:  return DeepState_IsSymbolicUInt64(x);
+        -:   81:}
+        -:   82:
+        -:   83:DEEPSTATE_INLINE static int IsSymbolic(int64_t x) {
+        -:   84:  return DeepState_IsSymbolicInt64(x);
+        -:   85:}
+        -:   86:
+        -:   87:DEEPSTATE_INLINE static bool IsSymbolic(uint32_t x) {
+        -:   88:  return DeepState_IsSymbolicUInt(x);
+        -:   89:}
+        -:   90:
+        -:   91:DEEPSTATE_INLINE static bool IsSymbolic(int32_t x) {
+        -:   92:  return DeepState_IsSymbolicInt(x);
+        -:   93:}
+        -:   94:
+        -:   95:DEEPSTATE_INLINE static int IsSymbolic(uint16_t x) {
+        -:   96:  return DeepState_IsSymbolicUShort(x);
+        -:   97:}
+        -:   98:
+        -:   99:DEEPSTATE_INLINE static bool IsSymbolic(int16_t x) {
+        -:  100:  return DeepState_IsSymbolicShort(x);
+        -:  101:}
+        -:  102:
+        -:  103:DEEPSTATE_INLINE static bool IsSymbolic(unsigned char x) {
+        -:  104:  return DeepState_IsSymbolicUChar(x);
+        -:  105:}
+        -:  106:
+        -:  107:DEEPSTATE_INLINE static bool IsSymbolic(char x) {
+        -:  108:  return DeepState_IsSymbolicChar(x);
+        -:  109:}
+        -:  110:
+        -:  111:DEEPSTATE_INLINE static bool IsSymbolic(float x) {
+        -:  112:  return DeepState_IsSymbolicFloat(x);
+        -:  113:}
+        -:  114:
+        -:  115:DEEPSTATE_INLINE static bool IsSymbolic(double x) {
+        -:  116:  return DeepState_IsSymbolicDouble(x);
+        -:  117:}
+        -:  118:
+        -:  119:// A test fixture.
+        -:  120:class Test {
+        -:  121: public:
+        -:  122:  Test(void) = default;
+        -:  123:  ~Test(void) = default;
+        -:  124:  inline void SetUp(void) {}
+        -:  125:  inline void TearDown(void) {}
+        -:  126:
+        -:  127: private:
+        -:  128:  Test(const Test &) = delete;
+        -:  129:  Test(Test &&) = delete;
+        -:  130:  Test &operator=(const Test &) = delete;
+        -:  131:  Test &operator=(Test &&) = delete;
+        -:  132:};
+        -:  133:
+        -:  134:template <typename T>
+        -:  135:class Symbolic {
+        -:  136: public:
+        -:  137:  template <typename... Args>
+        -:  138:  DEEPSTATE_INLINE Symbolic(Args&& ...args)
+        -:  139:      : value(std::forward<Args...>(args)...) {}
+        -:  140:
+        -:  141:  DEEPSTATE_INLINE Symbolic(void) {
+        -:  142:    T *val_ptr = &value;
+        -:  143:    DeepState_SymbolizeData(val_ptr, &(val_ptr[1]));
+        -:  144:  }
+        -:  145:
+        -:  146:  DEEPSTATE_INLINE operator T (void) const {
+        -:  147:    return value;
+        -:  148:  }
+        -:  149:
+        -:  150:  T value;
+        -:  151:};
+        -:  152:
+        -:  153:template <typename T>
+        -:  154:class Symbolic<T &> {};
+        -:  155:
+        -:  156:template <typename T>
+        -:  157:class SymbolicLinearContainer {
+        -:  158: public:
+        -:  159:  DEEPSTATE_INLINE explicit SymbolicLinearContainer(size_t len)
+        -:  160:      : value(len) {
+        -:  161:    if (!value.empty()) {
+        -:  162:      DeepState_SymbolizeData(&(value.front()), &(value.back()));
+        -:  163:    }
+        -:  164:  }
+        -:  165:
+        -:  166:  DEEPSTATE_INLINE SymbolicLinearContainer(void) {
+        -:  167:    value.reserve(32);
+        -:  168:    value.resize(DeepState_SizeInRange(0, 32));  // Avoids symbolic `malloc`.
+        -:  169:  }
+        -:  170:
+        -:  171:  DEEPSTATE_INLINE operator T (void) const {
+        -:  172:    return value;
+        -:  173:  }
+        -:  174:
+        -:  175:  T value;
+        -:  176:};
+        -:  177:
+        -:  178:template <>
+        -:  179:class Symbolic<std::string> : public SymbolicLinearContainer<std::string> {
+        -:  180:  using SymbolicLinearContainer::SymbolicLinearContainer;
+        -:  181:};
+        -:  182:
+        -:  183:template <>
+        -:  184:class Symbolic<std::wstring> : public SymbolicLinearContainer<std::wstring> {
+        -:  185:  using SymbolicLinearContainer::SymbolicLinearContainer;
+        -:  186:};
+        -:  187:
+        -:  188:template <typename T>
+        -:  189:class Symbolic<std::vector<T>> :
+        -:  190:    public SymbolicLinearContainer<std::vector<T>> {};
+        -:  191:
+        -:  192:#define MAKE_SYMBOL_SPECIALIZATION(Tname, tname) \
+        -:  193:    template <> \
+        -:  194:    class Symbolic<tname> { \
+        -:  195:     public: \
+        -:  196:      using SelfType = Symbolic<tname>; \
+        -:  197:      \
+        -:  198:      DEEPSTATE_INLINE Symbolic(void) \
+        -:  199:          : value(DeepState_ ## Tname()) {} \
+        -:  200:      \
+        -:  201:      DEEPSTATE_INLINE Symbolic(tname that) \
+        -:  202:          : value(that) {} \
+        -:  203:      \
+        -:  204:      DEEPSTATE_INLINE Symbolic(const SelfType &that) \
+        -:  205:          : value(that.value) {} \
+        -:  206:      \
+        -:  207:      DEEPSTATE_INLINE Symbolic(SelfType &&that) \
+        -:  208:          : value(std::move(that.value)) {} \
+        -:  209:      \
+        -:  210:      DEEPSTATE_INLINE operator tname (void) const { \
+        -:  211:        return value; \
+        -:  212:      } \
+        -:  213:      SelfType &operator=(const SelfType &that) = default; \
+        -:  214:      SelfType &operator=(SelfType &&that) = default; \
+        -:  215:      SelfType &operator=(tname that) { \
+        -:  216:        value = that; \
+        -:  217:        return *this; \
+        -:  218:      } \
+        -:  219:      SelfType &operator+=(tname that) { \
+        -:  220:        value += that; \
+        -:  221:        return *this; \
+        -:  222:      } \
+        -:  223:      SelfType &operator-=(tname that) { \
+        -:  224:        value -= that; \
+        -:  225:        return *this; \
+        -:  226:      } \
+        -:  227:      SelfType &operator*=(tname that) { \
+        -:  228:        value *= that; \
+        -:  229:        return *this; \
+        -:  230:      } \
+        -:  231:      SelfType &operator/=(tname that) { \
+        -:  232:        value /= that; \
+        -:  233:        return *this; \
+        -:  234:      } \
+        -:  235:      SelfType &operator>>=(tname that) { \
+        -:  236:        value >>= that; \
+        -:  237:        return *this; \
+        -:  238:      } \
+        -:  239:      SelfType &operator<<=(tname that) { \
+        -:  240:        value <<= that; \
+        -:  241:        return *this; \
+        -:  242:      } \
+        -:  243:      tname &operator++(void) { \
+        -:  244:        return ++value; \
+        -:  245:      } \
+        -:  246:      tname operator++(int) { \
+        -:  247:        auto prev_value = value; \
+        -:  248:        value++; \
+        -:  249:        return prev_value; \
+        -:  250:      } \
+        -:  251:      tname value; \
+        -:  252:    };
+        -:  253:
+        -:  254:MAKE_SYMBOL_SPECIALIZATION(UInt64, uint64_t)
+        -:  255:MAKE_SYMBOL_SPECIALIZATION(Int64, int64_t)
+        -:  256:MAKE_SYMBOL_SPECIALIZATION(UInt, uint32_t)
+        -:  257:MAKE_SYMBOL_SPECIALIZATION(Int, int32_t)
+        -:  258:MAKE_SYMBOL_SPECIALIZATION(UShort, uint16_t)
+        -:  259:MAKE_SYMBOL_SPECIALIZATION(Short, int16_t)
+        -:  260:MAKE_SYMBOL_SPECIALIZATION(UChar, uint8_t)
+        -:  261:MAKE_SYMBOL_SPECIALIZATION(Char, int8_t)
+        -:  262:
+        -:  263:
+        -:  264:using symbolic_char = Symbolic<char>;
+        -:  265:using symbolic_short = Symbolic<short>;
+        -:  266:using symbolic_int = Symbolic<int>;
+        -:  267:using symbolic_unsigned = Symbolic<unsigned>;
+        -:  268:using symbolic_long = Symbolic<long>;
+        -:  269:
+        -:  270:using symbolic_int8_t = Symbolic<int8_t>;
+        -:  271:using symbolic_uint8_t = Symbolic<uint8_t>;
+        -:  272:using symbolic_int16_t = Symbolic<int16_t>;
+        -:  273:using symbolic_uint16_t = Symbolic<uint16_t>;
+        -:  274:using symbolic_int32_t = Symbolic<int32_t>;
+        -:  275:using symbolic_uint32_t = Symbolic<uint32_t>;
+        -:  276:using symbolic_int64_t = Symbolic<int64_t>;
+        -:  277:using symbolic_uint64_t = Symbolic<uint64_t>;
+        -:  278:
+        -:  279:#undef MAKE_SYMBOL_SPECIALIZATION
+        -:  280:
+        -:  281:#define MAKE_MINIMIZER(Type, type) \
+        -:  282:    DEEPSTATE_INLINE static type Minimize(type val) { \
+        -:  283:      return DeepState_Min ## Type(val); \
+        -:  284:    } \
+        -:  285:    DEEPSTATE_INLINE static type Maximize(type val) { \
+        -:  286:      return DeepState_Max ## Type(val); \
+        -:  287:    }
+        -:  288:
+        -:  289:MAKE_MINIMIZER(UInt, uint32_t)
+        -:  290:MAKE_MINIMIZER(Int, int32_t)
+        -:  291:MAKE_MINIMIZER(UShort, uint16_t)
+        -:  292:MAKE_MINIMIZER(Short, int16_t)
+        -:  293:MAKE_MINIMIZER(UChar, uint8_t)
+        -:  294:MAKE_MINIMIZER(Char, int8_t)
+        -:  295:
+        -:  296:#undef MAKE_MINIMIZER
+        -:  297:
+        -:  298:template <typename T>
+        -:  299:static T Pump(T val, unsigned max=10) {
+        -:  300:  if (!IsSymbolic(val)) {
+        -:  301:    return val;
+        -:  302:  }
+        -:  303:  if (!max) {
+        -:  304:    DeepState_Abandon("Must have a positive maximum number of values to Pump");
+        -:  305:  }
+        -:  306:  for (auto i = 0U; i < max - 1; ++i) {
+        -:  307:    T min_val = Minimize(val);
+        -:  308:    if (val == min_val) {
+        -:  309:      DEEPSTATE_USED(min_val);  // Force the concrete `min_val` to be returned,
+        -:  310:                                // as opposed to compiler possibly choosing to
+        -:  311:                                // return `val`.
+        -:  312:      return min_val;
+        -:  313:    }
+        -:  314:  }
+        -:  315:  return Minimize(val);
+        -:  316:}
+        -:  317:
+        -:  318:template <typename... Args>
+        -:  319:inline static void ForAll(void (*func)(Args...)) {
+        -:  320:  func(Symbolic<Args>()...);
+        -:  321:}
+        -:  322:
+        -:  323:template <typename... Args, typename Closure>
+        -:  324:inline static void ForAll(Closure func) {
+        -:  325:  func(Symbolic<Args>()...);
+        -:  326:}
+        -:  327:
+        -:  328:#define PureSwarmOneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  329:#define MixedSwarmOneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  330:#define ProbSwarmOneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  331:
+        -:  332:#ifndef DEEPSTATE_PURE_SWARM
+        -:  333:#ifndef DEEPSTATE_MIXED_SWARM
+        -:  334:#ifndef DEEPSTATE_PROB_SWARM
+        -:  335:#define OneOf(...) NoSwarmOneOf(__VA_ARGS__)
+        -:  336:#endif
+        -:  337:#endif
+        -:  338:#endif
+        -:  339:
+        -:  340:#ifdef DEEPSTATE_PURE_SWARM
+        -:  341:#define OneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  342:#endif
+        -:  343:
+        -:  344:#ifdef DEEPSTATE_MIXED_SWARM
+        -:  345:#define OneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  346:#endif
+        -:  347:
+        -:  348:#ifdef DEEPSTATE_PROB_SWARM
+        -:  349:#define OneOf(...) _SwarmOneOf(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  350:#endif
+        -:  351:
+        -:  352:template <typename... FuncTys>
+        -:  353:inline static void NoSwarmOneOf(FuncTys&&... funcs) {
+        -:  354:  if (FLAGS_verbose_reads) {
+        -:  355:    printf("STARTING OneOf CALL\n");
+        -:  356:  }
+        -:  357:  std::function<void(void)> func_arr[sizeof...(FuncTys)] = {funcs...};
+        -:  358:  unsigned index = DeepState_UIntInRange(
+        -:  359:      0U, static_cast<unsigned>(sizeof...(funcs))-1);
+        -:  360:  func_arr[Pump(index, sizeof...(funcs))]();
+        -:  361:  if (FLAGS_verbose_reads) {
+        -:  362:    printf("FINISHED OneOf CALL\n");
+        -:  363:  }
+        -:  364:}
+        -:  365:
+        -:  366:template <typename... FuncTys>
+        -:  367:inline static void _SwarmOneOf(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  368:			       FuncTys&&... funcs) {
+        -:  369:  unsigned fcount = static_cast<unsigned>(sizeof...(funcs));
+        -:  370:  std::function<void(void)> func_arr[sizeof...(FuncTys)] = {funcs...};
+        -:  371:  struct DeepState_SwarmConfig* sc = DeepState_GetSwarmConfig(fcount, file, line, stype);
+        -:  372:  if (FLAGS_verbose_reads) {
+        -:  373:    printf("STARTING OneOf CALL\n");
+        -:  374:  }
+        -:  375:  unsigned index = DeepState_UIntInRange(0U, sc->fcount-1);
+        -:  376:  func_arr[sc->fmap[Pump(index, sc->fcount)]]();
+        -:  377:  if (FLAGS_verbose_reads) {
+        -:  378:    printf("FINISHED OneOf CALL\n");
+        -:  379:  }
+        -:  380:}
+        -:  381:
+function _ZN9deepstate9PickIndexEPdm called 0 returned 0% blocks executed 0%
+    #####:  382:size_t PickIndex(double *probs, size_t length) {
+        -:  383:  double total = 0.0;
+    #####:  384:  size_t missing = 0;
+    #####:  385:  for (size_t i = 0; i < length; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:  386:    if (probs[i] >= 0.0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  387:      total += probs[i];
+    #####:  388:    } else{
+    #####:  389:      ++missing;
+        -:  390:    }
+        -:  391:  }
+    #####:  392:  if (total > 1.0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  393:    DeepState_Abandon("Probabilities sum to more than 1.0");
+        -:  394:  }
+    #####:  395:  if (missing > 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  396:    double remainder = (1.0 - total) / missing;
+    #####:  397:    for (size_t i = 0; i < length; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:  398:      if (probs[i] < 0.0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  399:	probs[i] = remainder;
+    #####:  400:      }
+        -:  401:    }
+    #####:  402:  } else if (total < 0.999) {
+branch  0 never executed
+branch  1 never executed
+    #####:  403:    DeepState_Abandon("Total of probabilities is significantly less than 1.0");
+        -:  404:  }
+        -:  405:
+        -:  406:  // We cannot use DeepState_Float/Double here because the distribution is very bad
+    #####:  407:  double P = DeepState_UIntInRange(0, 10000000)/10000000.0;
+        -:  408:  unsigned index = 0;
+        -:  409:  double sum = 0.0;
+    #####:  410:  while ((index < length) && (P > (sum + probs[index]))) {
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+        -:  411:    sum += probs[index];
+    #####:  412:    index++;
+        -:  413:  }
+    #####:  414:  return index;
+        -:  415:}
+        -:  416:
+        -:  417:typedef std::function<void(void)> func_t;
+        -:  418:
+function _ZN9deepstate23ActuallySelectSomethingEPdPSt8functionIFvvEEm called 0 returned 0% blocks executed 0%
+    #####:  419:void ActuallySelectSomething(double *probs, func_t *funcs, size_t length) {
+    #####:  420:  if (FLAGS_verbose_reads) {
+branch  0 never executed
+branch  1 never executed
+    #####:  421:    printf("STARTING OneOf CALL\n");
+    #####:  422:  }
+        -:  423:
+    #####:  424:  funcs[PickIndex(probs, length)]();
+    #####:  425:  if (FLAGS_verbose_reads) {
+branch  0 never executed
+branch  1 never executed
+    #####:  426:    printf("FINISHED OneOf CALL\n");
+    #####:  427:  }
+    #####:  428:}
+        -:  429:
+        -:  430:// These two helper functions participate in the splitting.
+        -:  431:// Base case does nothing
+function _ZN9deepstate9SplitArgsEPdPSt8functionIFvvEE called 0 returned 0% blocks executed 0%
+    #####:  432:void SplitArgs(double* probs, func_t *funcs) {
+    #####:  433:}
+        -:  434:
+        -:  435:// recursive case
+        -:  436:template<typename TyFunc, typename... Rest>
+        -:  437:void SplitArgs(double* probs, func_t *funcs, double firstProb, TyFunc &&firstFunc, Rest &&... rest) {
+        -:  438:  *probs = firstProb;
+        -:  439:  *funcs = firstFunc;
+        -:  440:  SplitArgs(probs + 1, funcs + 1, std::forward<Rest>(rest)...);
+        -:  441:}
+        -:  442:
+        -:  443:// The entry point for OneOfP over lambdas
+        -:  444:template<typename... Args>
+        -:  445:void OneOfP(Args &&... args) {
+        -:  446:  constexpr auto argsLen = sizeof...(Args);
+        -:  447:  static_assert((argsLen % 2) == 0, "OneOfP expects probability/lambda pairs");
+        -:  448:  constexpr auto length = argsLen / 2;
+        -:  449:
+        -:  450:  double probs[length];
+        -:  451:  func_t funcs[length];
+        -:  452:  SplitArgs(probs, funcs, std::forward<Args>(args)...);
+        -:  453:
+        -:  454:  ActuallySelectSomething(probs, funcs, length);
+        -:  455:}
+        -:  456:
+        -:  457:inline static char NoSwarmOneOf(const char *str) {
+        -:  458:  if (!str || !str[0]) {
+        -:  459:    DeepState_Abandon("NULL or empty string passed to OneOf");
+        -:  460:  }
+        -:  461:  return str[DeepState_IntInRange(0, strlen(str) - 1)];
+        -:  462:}
+        -:  463:
+        -:  464:inline static char _SwarmOneOf(const char* file, unsigned line, enum DeepState_SwarmType stype, const char *str) {
+        -:  465:  if (!str || !str[0]) {
+        -:  466:    DeepState_Abandon("NULL or empty string passed to OneOf");
+        -:  467:  }
+        -:  468:  unsigned fcount = strlen(str);
+        -:  469:  struct DeepState_SwarmConfig* sc = DeepState_GetSwarmConfig(fcount, file, line, stype);
+        -:  470:  unsigned index = sc->fmap[DeepState_UIntInRange(0U, sc->fcount-1)];
+        -:  471:  return str[index];
+        -:  472:}
+        -:  473:
+        -:  474:template <typename T>
+        -:  475:inline static const T &NoSwarmOneOf(std::vector<T> &arr) {
+        -:  476:  if (arr.empty()) {
+        -:  477:    DeepState_Abandon("Empty vector passed to OneOf");
+        -:  478:  }
+        -:  479:  return arr[DeepState_IntInRange(0, arr.size() - 1)];
+        -:  480:}
+        -:  481:
+function _ZN9deepstate13PickListIndexESt16initializer_listIdEm called 0 returned 0% blocks executed 0%
+    #####:  482:size_t PickListIndex(std::initializer_list<double> probs, size_t length) {
+        -:  483:  // The list is interpreted as follows:  a negative probability means "use even distribution"
+        -:  484:  // over all probabilities not specified", and the same strategy is used to fill out the list
+        -:  485:  // to match the count of items to be chosen among.
+    #####:  486:  if (probs.size() > length) {
+branch  0 never executed
+branch  1 never executed
+    #####:  487:    DeepState_Abandon("Probability list size greater than number of choices");
+        -:  488:  }
+    #####:  489:  double P[length];
+        -:  490:  size_t iP = 0;
+    #####:  491:  for (std::initializer_list<double>::iterator it = probs.begin(); it != probs.end(); ++it) {
+branch  0 never executed
+branch  1 never executed
+    #####:  492:    P[iP++] = *it;
+        -:  493:  }
+    #####:  494:  while (iP < length) {
+branch  0 never executed
+branch  1 never executed
+    #####:  495:    P[iP++] = -1.0;
+        -:  496:  }
+        -:  497:
+    #####:  498:  return PickIndex(P, length);
+    #####:  499:}
+        -:  500:
+        -:  501:template <typename T>
+        -:  502:inline static const T &OneOfP(std::initializer_list<double> probs, std::vector<T> &arr) {
+        -:  503:  if (arr.empty()) {
+        -:  504:    DeepState_Abandon("Empty vector passed to OneOf");
+        -:  505:  }
+        -:  506:  size_t index = PickListIndex(probs, arr.size());
+        -:  507:  return arr[index];
+        -:  508:}
+        -:  509:
+        -:  510:template <typename T>
+        -:  511:inline static const T &_SwarmOneOf(const char* file, unsigned line, enum DeepState_SwarmType stype, const std::vector<T> &arr) {
+        -:  512:  if (arr.empty()) {
+        -:  513:    DeepState_Abandon("Empty vector passed to OneOf");
+        -:  514:  }
+        -:  515:  unsigned fcount = arr.size();
+        -:  516:  struct DeepState_SwarmConfig* sc = DeepState_GetSwarmConfig(fcount, file, line, stype);
+        -:  517:  unsigned index = sc->fmap[DeepState_UIntInRange(0U, sc->fcount-1)];
+        -:  518:  return arr[index];
+        -:  519:}
+        -:  520:
+        -:  521:template <typename T, int len>
+        -:  522:inline static const T &NoSwarmOneOf(T (&arr)[len]) {
+        -:  523:  if (!len) {
+        -:  524:    DeepState_Abandon("Empty array passed to OneOf");
+        -:  525:  }
+        -:  526:  return arr[DeepState_IntInRange(0, len - 1)];
+        -:  527:}
+        -:  528:
+        -:  529:template <typename T, int len>
+        -:  530:inline static const T &OneOfP(std::initializer_list<double> probs, T (&arr)[len]) {
+        -:  531:  if (!len) {
+        -:  532:    DeepState_Abandon("Empty array passed to OneOf");
+        -:  533:  }
+        -:  534:  size_t index = PickListIndex(probs, len);
+        -:  535:  return arr[index];
+        -:  536:}
+        -:  537:
+        -:  538:template <typename T, int len>
+        -:  539:inline static const T &_SwarmOneOf(const char* file, unsigned line, enum DeepState_SwarmType stype, T (&arr)[len]) {
+        -:  540:  if (!len) {
+        -:  541:    DeepState_Abandon("Empty array passed to OneOf");
+        -:  542:  }
+        -:  543:  struct DeepState_SwarmConfig*	sc = DeepState_GetSwarmConfig(len, file, line, stype);
+        -:  544:  unsigned index = sc->fmap[DeepState_UIntInRange(0U, sc->fcount-1)];
+        -:  545:  return arr[index];
+        -:  546:}
+        -:  547:
+        -:  548:
+        -:  549:template <typename T, int k=sizeof(T) * 8>
+        -:  550:struct ExpandedCompareIntegral {
+        -:  551:  template <typename C>
+        -:  552:  static DEEPSTATE_INLINE bool Compare(T a, T b, C cmp) {
+        -:  553:    if (cmp((a & 0xFF), (b & 0xFF))) {
+        -:  554:      return ExpandedCompareIntegral<T, k - 8>::Compare(a >> 8, b >> 8, cmp);
+        -:  555:    }
+        -:  556:    return DeepState_ZeroSink(k);  // Also false.
+        -:  557:  }
+        -:  558:};
+        -:  559:
+        -:  560:template <typename T>
+        -:  561:struct ExpandedCompareIntegral<T, 0> {
+        -:  562:  template <typename C>
+        -:  563:  static DEEPSTATE_INLINE bool Compare(T a, T b, C cmp) {
+        -:  564:    if (cmp((a & 0xFF), (b & 0xFF))) {
+        -:  565:      return DeepState_ZeroSink(0);
+        -:  566:    } else {
+        -:  567:      return DeepState_ZeroSink(100);
+        -:  568:    }
+        -:  569:  }
+        -:  570:};
+        -:  571:
+        -:  572:template <typename T>
+        -:  573:struct DeclType {
+        -:  574:  using Type = T;
+        -:  575:};
+        -:  576:
+        -:  577:template <typename T>
+        -:  578:struct DeclType<T &> : public DeclType<T> {};
+        -:  579:
+        -:  580:template <typename T>
+        -:  581:struct DeclType<Symbolic<T>> : public DeclType<T> {};
+        -:  582:
+        -:  583:template <typename T>
+        -:  584:struct DeclType<Symbolic<T> &> : public DeclType<T> {};
+        -:  585:
+        -:  586:template <typename T>
+        -:  587:struct IsIntegral : public std::is_integral<T> {};
+        -:  588:
+        -:  589:template <typename T>
+        -:  590:struct IsIntegral<T &> : public IsIntegral<T> {};
+        -:  591:
+        -:  592:template <typename T>
+        -:  593:struct IsIntegral<Symbolic<T>> : public IsIntegral<T> {};
+        -:  594:
+        -:  595:template <typename T>
+        -:  596:struct IsSigned : public std::is_signed<T> {};
+        -:  597:
+        -:  598:template <typename T>
+        -:  599:struct IsSigned<T &> : public IsSigned<T> {};
+        -:  600:
+        -:  601:template <typename T>
+        -:  602:struct IsSigned<Symbolic<T>> : public IsSigned<T> {};
+        -:  603:
+        -:  604:template <typename T>
+        -:  605:struct IsUnsigned : public std::is_unsigned<T> {};
+        -:  606:
+        -:  607:template <typename T>
+        -:  608:struct IsUnsigned<T &> : public IsUnsigned<T> {};
+        -:  609:
+        -:  610:template <typename T>
+        -:  611:struct IsUnsigned<Symbolic<T>> : public std::is_unsigned<T> {};
+        -:  612:
+        -:  613:template <typename A, typename B>
+        -:  614:struct BestType {
+        -:  615:
+        -:  616:  // type alias for bools, since std::make_unsigned<bool> returns unexpected behavior
+        -:  617:  using _A = typename std::conditional<std::is_same<A, bool>::value, unsigned int, A>::type;
+        -:  618:  using _B = typename std::conditional<std::is_same<B, bool>::value, unsigned int, B>::type;
+        -:  619:
+        -:  620:  using UA = typename std::conditional<
+        -:  621:      IsUnsigned<B>::value,
+        -:  622:      typename std::make_unsigned<_A>::type, A>::type;
+        -:  623:
+        -:  624:  using UB = typename std::conditional<
+        -:  625:      IsUnsigned<A>::value,
+        -:  626:      typename std::make_unsigned<_B>::type, B>::type;
+        -:  627:
+        -:  628:  using Type = typename std::conditional<(sizeof(UA) > sizeof(UB)),
+        -:  629:                                         UA, UB>::type;
+        -:  630:};
+        -:  631:
+        -:  632:template <typename A, typename B>
+        -:  633:struct Comparer {
+        -:  634:  static constexpr bool kIsIntegral = IsIntegral<A>() && IsIntegral<B>();
+        -:  635:  static constexpr bool IsBool = std::is_same<A, bool>::value && std::is_same<B, bool>::value;
+        -:  636:
+        -:  637:  struct tag_int {};
+        -:  638:  struct tag_not_int {};
+        -:  639:
+        -:  640:  using tag = typename std::conditional<kIsIntegral,tag_int,tag_not_int>::type;
+        -:  641:
+        -:  642:  template <typename C>
+        -:  643:  static DEEPSTATE_INLINE bool Do(const A &a, const B &b, C cmp, tag_not_int) {
+        -:  644:    return cmp(a, b);
+        -:  645:  }
+        -:  646:
+        -:  647:  template <typename C>
+        -:  648:  static DEEPSTATE_INLINE bool Do(A a, B b, C cmp, tag_int) {
+        -:  649:    using T = typename ::deepstate::BestType<A, B>::Type;
+        -:  650:    if (cmp(a, b)) {
+        -:  651:      return true;
+        -:  652:    }
+        -:  653:    DEEPSTATE_USED(a);  // These make the compiler forget everything it knew
+        -:  654:    DEEPSTATE_USED(b);  // about `a` and `b`.
+        -:  655:    return ::deepstate::ExpandedCompareIntegral<T>::Compare(a, b, cmp);
+        -:  656:  }
+        -:  657:
+        -:  658:  template <typename C>
+        -:  659:  static DEEPSTATE_INLINE bool Do(const A &a, const B &b, C cmp) {
+        -:  660:
+        -:  661:    // IsIntegral returns true for booleans, so we override to basic overloaded method
+        -:  662:    // if we have boolean template parameters passed to prevent error in ASSERT_EQ
+        -:  663:    if (IsBool) {
+        -:  664:      return Do(a, b, cmp, tag_not_int());
+        -:  665:    }
+        -:  666:    return Do(a, b, cmp, tag());
+        -:  667:  }
+        -:  668:
+        -:  669:};
+        -:  670:
+        -:  671:#define DeepState_PureSwarmAssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  672:#define DeepState_MixedSwarmAssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  673:#define DeepState_ProbSwarmAssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  674:
+        -:  675:#define DeepState_PureSwarmAssignCStrUpToLen(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  676:#define DeepState_MixedSwarmAssignCStrUpToLen(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  677:#define DeepState_ProbSwarmAssignCStrUpToLen(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  678:
+        -:  679:#define DeepState_PureSwarmCStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  680:#define DeepState_MixedSwarmCStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  681:#define DeepState_ProbSwarmCStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  682:
+        -:  683:#define DeepState_PureSwarmCStrUpToLen(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  684:#define DeepState_MixedSwarmCStrUpToLen(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  685:#define DeepState_ProbSwarmCStrUpToLen(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  686:
+        -:  687:#define DeepState_PureSwarmSymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  688:#define DeepState_MixedSwarmSymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  689:#define DeepState_ProbSwarmSymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  690:
+        -:  691:#ifndef DEEPSTATE_PURE_SWARM
+        -:  692:#ifndef DEEPSTATE_MIXED_SWARM
+        -:  693:#ifndef DEEPSTATE_PROB_SWARM
+        -:  694:#define DeepState_AssignCStr(...) DeepState_NoSwarmAssignCStr(__VA_ARGS__)
+        -:  695:#define DeepState_AssignCStrUpToLen(...) DeepState_NoSwarmAssignCStrUpToLen(__VA_ARGS__)
+        -:  696:#define DeepState_CStr(...) DeepState_NoSwarmCStr(__VA_ARGS__)
+        -:  697:#define DeepState_CStrUpToLen(...) DeepState_NoSwarmCStrUpToLen(__VA_ARGS__)
+        -:  698:#define DeepState_SymbolizeCStr(...) DeepState_NoSwarmSymbolizeCStr(__VA_ARGS__)
+        -:  699:#endif
+        -:  700:#endif
+        -:  701:#endif
+        -:  702:
+        -:  703:
+        -:  704:#ifdef DEEPSTATE_PURE_SWARM
+        -:  705:#define DeepState_AssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  706:#define DeepState_AssignCStrUpToLen(...) _DeepState_SwarmAssignCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  707:#define DeepState_CStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  708:#define DeepState_CStrUpToLen(...) _DeepState_SwarmCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  709:#define DeepState_SymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypePure, __VA_ARGS__)
+        -:  710:#endif
+        -:  711:
+        -:  712:#ifdef DEEPSTATE_MIXED_SWARM
+        -:  713:#define DeepState_AssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  714:#define DeepState_AssignCStrUpToLen(...) _DeepState_SwarmAssignCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  715:#define DeepState_CStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  716:#define DeepState_CStrUpToLen(...) _DeepState_SwarmCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  717:#define DeepState_SymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypeMixed, __VA_ARGS__)
+        -:  718:#endif
+        -:  719:
+        -:  720:#ifdef DEEPSTATE_PROB_SWARM
+        -:  721:#define DeepState_AssignCStr(...) _DeepState_SwarmAssignCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  722:#define DeepState_AssignCStrUpToLen(...) _DeepState_SwarmAssignCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  723:#define DeepState_CStr(...) _DeepState_SwarmCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  724:#define DeepState_CStrUpToLen(...) _DeepState_SwarmCStrUpToLen(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  725:#define DeepState_SymbolizeCStr(...) _DeepState_SwarmSymbolizeCStr(__FILE__, __LINE__, DeepState_SwarmTypeProb, __VA_ARGS__)
+        -:  726:#endif
+        -:  727:
+        -:  728:/* Like DeepState_AssignCStr_C, but fills in a null `allowed` value. */
+        -:  729:inline static void DeepState_NoSwarmAssignCStr(char* str, size_t len,
+        -:  730:					       const char* allowed = 0) {
+        -:  731:  DeepState_AssignCStr_C(str, len, allowed);
+        -:  732:}
+        -:  733:
+        -:  734:inline static void _DeepState_SwarmAssignCStr(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  735:					      char* str, size_t len,
+        -:  736:					      const char* allowed = 0) {
+        -:  737:  DeepState_SwarmAssignCStr_C(file, line, stype, str, len, allowed);
+        -:  738:}
+        -:  739:
+        -:  740:/* Like DeepState_AssignCStr, but Pumps through possible string sizes. */
+        -:  741:inline static void DeepState_NoSwarmAssignCStrUpToLen(char* str, size_t max_len,
+        -:  742:						      const char* allowed = 0) {
+        -:  743:  uint32_t len = DeepState_UIntInRange(0, max_len);
+        -:  744:  DeepState_AssignCStr_C(str, Pump(len, max_len+1), allowed);
+        -:  745:}
+        -:  746:
+        -:  747:inline static void _DeepState_SwarmAssignCStrUpToLen(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  748:						     char* str, size_t max_len,
+        -:  749:						     const char* allowed = 0) {
+        -:  750:  uint32_t len = DeepState_UIntInRange(0, max_len);
+        -:  751:  DeepState_SwarmAssignCStr_C(file, line, stype, str, Pump(len, max_len+1), allowed);
+        -:  752:}
+        -:  753:
+        -:  754:/* Like DeepState_CStr_C, but fills in a null `allowed` value. */
+        -:  755:inline static char* DeepState_NoSwarmCStr(size_t len, const char* allowed = 0) {
+        -:  756:  return DeepState_CStr_C(len, allowed);
+        -:  757:}
+        -:  758:
+        -:  759:inline static char* _DeepState_SwarmCStr(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  760:					size_t len, const char* allowed = 0) {
+        -:  761:  return DeepState_SwarmCStr_C(file, line, stype, len, allowed);
+        -:  762:}
+        -:  763:
+        -:  764:/* Like DeepState_CStr, but Pumps through possible string sizes. */
+        -:  765:inline static char* DeepState_NoSwarmCStrUpToLen(size_t max_len, const char* allowed = 0) {
+        -:  766:  uint32_t len = DeepState_UIntInRange(0, max_len);
+        -:  767:  return DeepState_CStr_C(Pump(len, max_len+1), allowed);
+        -:  768:}
+        -:  769:
+        -:  770:inline static char* _DeepState_SwarmCStrUpToLen(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  771:					       size_t max_len, const char* allowed = 0) {
+        -:  772:  uint32_t len = DeepState_UIntInRange(0, max_len);
+        -:  773:  return DeepState_SwarmCStr_C(file, line, stype, Pump(len, max_len+1), allowed);
+        -:  774:}
+        -:  775:
+        -:  776:/* Like DeepState_Symbolize_CStr, but fills in null `allowed` value. */
+        -:  777:inline static void DeepState_NoSwarmSymbolizeCStr(char *begin, const char* allowed = 0) {
+        -:  778:  DeepState_SymbolizeCStr_C(begin, allowed);
+        -:  779:}
+        -:  780:
+        -:  781:inline static void _DeepState_SwarmSymbolizeCStr(const char* file, unsigned line, enum DeepState_SwarmType stype,
+        -:  782:						char *begin, const char* allowed = 0) {
+        -:  783:  DeepState_SwarmSymbolizeCStr_C(file, line, stype, begin, allowed);
+        -:  784:}
+        -:  785: 
+        -:  786:}  // namespace deepstate
+        -:  787:
+        -:  788:#define ONE_OF ::deepstate::OneOf
+        -:  789:
+        -:  790:#define TEST(category, name) \
+        -:  791:    DeepState_EntryPoint(category ## _ ## name)
+        -:  792:
+        -:  793:#define _TEST_F(fixture_name, test_name, file, line) \
+        -:  794:    class fixture_name ## _ ## test_name : public fixture_name { \
+        -:  795:     public: \
+        -:  796:      void DoRunTest(void); \
+        -:  797:      static void RunTest(void) { \
+        -:  798:        do { \
+        -:  799:          fixture_name ## _ ## test_name self; \
+        -:  800:          self.SetUp(); \
+        -:  801:          self.DoRunTest(); \
+        -:  802:          self.TearDown(); \
+        -:  803:        } while (false); \
+        -:  804:        DeepState_Pass(); \
+        -:  805:      } \
+        -:  806:      static struct DeepState_TestInfo kTestInfo; \
+        -:  807:    }; \
+        -:  808:    struct DeepState_TestInfo fixture_name ## _ ## test_name::kTestInfo = { \
+        -:  809:      nullptr, \
+        -:  810:      fixture_name ## _ ## test_name::RunTest, \
+        -:  811:      DEEPSTATE_TO_STR(fixture_name ## _ ## test_name), \
+        -:  812:      file, \
+        -:  813:      line, \
+        -:  814:    }; \
+        -:  815:    DEEPSTATE_INITIALIZER(DeepState_Register_ ## test_name) { \
+        -:  816:      fixture_name ## _ ## test_name::kTestInfo.prev = DeepState_LastTestInfo; \
+        -:  817:      DeepState_LastTestInfo = &(fixture_name ## _ ## test_name::kTestInfo); \
+        -:  818:    } \
+        -:  819:    void fixture_name ## _ ## test_name :: DoRunTest(void)
+        -:  820:
+        -:  821:
+        -:  822:#define _EXPAND_COMPARE(a, b, op) \
+        -:  823:  ([] (decltype(a) __a0, decltype(b) __b0) -> bool { \
+        -:  824:    using __A = typename ::deepstate::DeclType<decltype(__a0)>::Type; \
+        -:  825:    using __B = typename ::deepstate::DeclType<decltype(__b0)>::Type; \
+        -:  826:    auto __cmp = [] (__A __a4, __B __b4) { return __a4 op __b4; }; \
+        -:  827:    return ::deepstate::Comparer<__A, __B>::Do(__a0, __b0, __cmp); \
+        -:  828:  })((a), (b))
+        -:  829:
+        -:  830:#define TEST_F(fixture_name, test_name) \
+        -:  831:    _TEST_F(fixture_name, test_name, __FILE__, __LINE__)
+        -:  832:
+        -:  833:#define LOG_DEBUG(cond) \
+        -:  834:    ::deepstate::Stream(DeepState_LogDebug, (cond), __FILE__, __LINE__)
+        -:  835:
+        -:  836:#define LOG_TRACE(cond) \
+        -:  837:    ::deepstate::Stream(DeepState_LogTrace, (cond), __FILE__, __LINE__)
+        -:  838:
+        -:  839:#define LOG_INFO(cond) \
+        -:  840:    ::deepstate::Stream(DeepState_LogInfo, (cond), __FILE__, __LINE__)
+        -:  841:
+        -:  842:#define LOG_WARNING(cond) \
+        -:  843:    ::deepstate::Stream(DeepState_LogWarning, (cond), __FILE__, __LINE__)
+        -:  844:
+        -:  845:#define LOG_WARN(cond) \
+        -:  846:    ::deepstate::Stream(DeepState_LogWarning, (cond), __FILE__, __LINE__)
+        -:  847:
+        -:  848:#define LOG_ERROR(cond) \
+        -:  849:    ::deepstate::Stream(DeepState_LogError, (cond), __FILE__, __LINE__)
+        -:  850:
+        -:  851:#define LOG_FATAL(cond) \
+        -:  852:    ::deepstate::Stream(DeepState_LogFatal, (cond), __FILE__, __LINE__)
+        -:  853:
+        -:  854:#define LOG_CRITICAL(cond) \
+        -:  855:    ::deepstate::Stream(DeepState_LogFatal, (cond), __FILE__, __LINE__)
+        -:  856:
+        -:  857:#define LOG(LEVEL) LOG_ ## LEVEL(true)
+        -:  858:
+        -:  859:#define LOG_IF(LEVEL, cond) LOG_ ## LEVEL(cond)
+        -:  860:
+        -:  861:#define DEEPSTATE_LOG_EQNE(a, b, op, level) \
+        -:  862:    ::deepstate::Stream( \
+        -:  863:        level, !(_EXPAND_COMPARE(a, b, op)), __FILE__, __LINE__)
+        -:  864:
+        -:  865:#define DEEPSTATE_LOG_BINOP(a, b, op, level) \
+        -:  866:    ::deepstate::Stream( \
+        -:  867:        level, !(a op b), __FILE__, __LINE__)
+        -:  868:
+        -:  869:#define ASSERT_EQ(a, b) DEEPSTATE_LOG_EQNE(a, b, ==, DeepState_LogFatal)
+        -:  870:#define ASSERT_NE(a, b) DEEPSTATE_LOG_EQNE(a, b, !=, DeepState_LogFatal)
+        -:  871:#define ASSERT_LT(a, b) DEEPSTATE_LOG_BINOP(a, b, <, DeepState_LogFatal)
+        -:  872:#define ASSERT_LE(a, b) DEEPSTATE_LOG_BINOP(a, b, <=, DeepState_LogFatal)
+        -:  873:#define ASSERT_GT(a, b) DEEPSTATE_LOG_BINOP(a, b, >, DeepState_LogFatal)
+        -:  874:#define ASSERT_GE(a, b) DEEPSTATE_LOG_BINOP(a, b, >=, DeepState_LogFatal)
+        -:  875:
+        -:  876:#define CHECK_EQ(a, b) DEEPSTATE_LOG_EQNE(a, b, ==, DeepState_LogError)
+        -:  877:#define CHECK_NE(a, b) DEEPSTATE_LOG_EQNE(a, b, !=, DeepState_LogError)
+        -:  878:#define CHECK_LT(a, b) DEEPSTATE_LOG_BINOP(a, b, <, DeepState_LogError)
+        -:  879:#define CHECK_LE(a, b) DEEPSTATE_LOG_BINOP(a, b, <=, DeepState_LogError)
+        -:  880:#define CHECK_GT(a, b) DEEPSTATE_LOG_BINOP(a, b, >, DeepState_LogError)
+        -:  881:#define CHECK_GE(a, b) DEEPSTATE_LOG_BINOP(a, b, >=, DeepState_LogError)
+        -:  882:
+        -:  883:#define ASSERT(expr) \
+        -:  884:    ::deepstate::Stream( \
+        -:  885:        DeepState_LogFatal, !(expr), __FILE__, __LINE__)
+        -:  886:
+        -:  887:#define ASSERT_TRUE ASSERT
+        -:  888:#define ASSERT_FALSE(expr) ASSERT(!(expr))
+        -:  889:
+        -:  890:#define CHECK(expr) \
+        -:  891:    ::deepstate::Stream( \
+        -:  892:        DeepState_LogError, !(expr), __FILE__, __LINE__)
+        -:  893:
+        -:  894:#define CHECK_TRUE CHECK
+        -:  895:#define CHECK_FALSE(expr) CHECK(!(expr))
+        -:  896:
+        -:  897:#define ASSUME(expr) \
+        -:  898:    DeepState_Assume(expr), ::deepstate::Stream( \
+        -:  899:        DeepState_LogTrace, true, __FILE__, __LINE__)
+        -:  900:
+        -:  901:#define DEEPSTATE_ASSUME_BINOP(a, b, op) \
+        -:  902:    DeepState_Assume((a op b)), ::deepstate::Stream( \
+        -:  903:        DeepState_LogTrace, true, __FILE__, __LINE__)
+        -:  904:
+        -:  905:#define ASSUME_EQ(a, b) DEEPSTATE_ASSUME_BINOP(a, b, ==)
+        -:  906:#define ASSUME_NE(a, b) DEEPSTATE_ASSUME_BINOP(a, b, !=)
+        -:  907:#define ASSUME_LT(a, b) DEEPSTATE_ASSUME_BINOP(a, b, <)
+        -:  908:#define ASSUME_LE(a, b) DEEPSTATE_ASSUME_BINOP(a, b, <=)
+        -:  909:#define ASSUME_GT(a, b) DEEPSTATE_ASSUME_BINOP(a, b, >)
+        -:  910:#define ASSUME_GE(a, b) DEEPSTATE_ASSUME_BINOP(a, b, >=)
+        -:  911:
+        -:  912:#endif  // SRC_INCLUDE_DEEPSTATE_DEEPSTATE_HPP_

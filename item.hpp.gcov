@@ -1,0 +1,43 @@
+        -:    0:Source:src/include/dict/item.hpp
+        -:    0:Graph:main_ds_harness.gcno
+        -:    0:Data:main_ds_harness.gcda
+        -:    0:Runs:1364
+        -:    0:Programs:1
+        -:    1:#ifndef _ONEGUI_DICT_ITEM
+        -:    2:#define _ONEGUI_DICT_ITEM
+        -:    3:#include <string>
+        -:    4:#include <list/item.hpp>
+        -:    5:
+        -:    6:struct DictItem : public ListItem
+        -:    7:{
+        -:    8:    std::string k;
+        -:    9:    void *v;
+        -:   10:    DictItem(std::string k, void *v)
+        -:   11:    {
+        -:   12:        this->k = k;
+        -:   13:        this->v = v;
+        -:   14:    }
+        -:   15:
+        -:   16:    DictItem(std::string *k, void *v)
+        -:   17:    {
+        -:   18:        this->k = *k;
+        -:   19:        this->v = v;
+        -:   20:    }
+        -:   21:
+function _ZN8DictItemC2EPKcPv called 5448 returned 100% blocks executed 55%
+     5448:   22:    DictItem(const char *k, void *v)
+     5448:   23:    {
+     5448:   24:        this->k = *(new std::string(k));
+branch  0 taken 100%
+branch  1 taken 0%
+branch  2 taken 100%
+branch  3 taken 0%
+branch  4 taken 100%
+branch  5 taken 0%
+branch  6 never executed
+branch  7 never executed
+     5448:   25:        this->v = v;
+     5448:   26:    }
+        -:   27:};
+        -:   28:
+        -:   29:#endif

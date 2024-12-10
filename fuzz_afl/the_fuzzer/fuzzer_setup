@@ -1,0 +1,3 @@
+# environment variables:
+# command line:
+'/home/user/deps/afl/afl-fuzz' '-o' 'fuzz_afl' '-M' 'the_fuzzer' '-m' '50' '-i' '-' '--' '/home/user/OneGUI/main_afl' '--input_stdin' '--abort_on_fail' '--no_fork' '--min_log_level' '2'
